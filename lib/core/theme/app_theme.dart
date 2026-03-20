@@ -81,7 +81,7 @@ abstract final class AppTheme {
         ),
 
         // ── Cards ────────────────────────────────────────────────────────────
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: AppColors.surfaceElevated,
           elevation: 0,
           margin: EdgeInsets.zero,
@@ -179,7 +179,7 @@ abstract final class AppTheme {
         ),
 
         // ── Dialog ───────────────────────────────────────────────────────────
-        dialogTheme: DialogTheme(
+        dialogTheme: DialogThemeData(
           backgroundColor: AppColors.surfaceVariant,
           elevation: 0,
           titleTextStyle: AppTypography.headlineSmall,
