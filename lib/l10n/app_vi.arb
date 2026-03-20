@@ -1,0 +1,79 @@
+{
+  "@@locale": "vi",
+
+  "appName": "Lull",
+  "appTagline": "Âm thanh thư giãn cho giấc ngủ ngon",
+
+  "navHome": "Trang chủ",
+  "navFavorites": "Yêu thích",
+  "navTimer": "Hẹn giờ",
+  "navSettings": "Cài đặt",
+
+  "homeGreetingNight": "Chúc ngủ ngon",
+  "homeSubtitle": "Chọn âm thanh để đi vào giấc ngủ",
+
+  "homeCategoryAll": "Tất cả",
+  "homeCategoryNature": "Thiên nhiên",
+  "homeCategoryRain": "Mưa",
+  "homeCategoryWhiteNoise": "Tiếng ồn trắng",
+  "homeCategoryUrban": "Đô thị",
+
+  "homeFeatured": "Nổi bật",
+  "homeSearchHint": "Tìm âm thanh…",
+
+  "playerNowPlaying": "Đang phát",
+  "playerVolume": "Âm lượng",
+  "playerIntensity": "Cường độ",
+  "playerLoop": "Lặp lại",
+  "playerAddToFavorites": "Thêm vào yêu thích",
+  "playerRemoveFromFavorites": "Xoá khỏi yêu thích",
+
+  "timerTitle": "Hẹn giờ ngủ",
+  "timerSetTimer": "Đặt hẹn giờ",
+  "timerNoTimer": "Chưa đặt hẹn giờ",
+  "timerActive": "Đang đếm ngược",
+  "timerTimeRemaining": "Còn lại {time}",
+
+  "timer15min": "15 phút",
+  "timer30min": "30 phút",
+  "timer60min": "1 giờ",
+  "timer90min": "90 phút",
+  "timerCustom": "Tuỳ chỉnh",
+  "timerStop": "Dừng",
+  "timerFadeOut": "Giảm dần âm thanh",
+
+  "favoritesTitle": "Yêu thích",
+  "favoritesEmpty": "Chưa có mục yêu thích",
+  "favoritesEmptySubtitle": "Nhấn trái tim trên bất kỳ âm thanh nào để lưu tại đây",
+
+  "settingsTitle": "Cài đặt",
+  "settingsSectionGeneral": "Chung",
+  "settingsSectionPlayback": "Phát lại",
+  "settingsLanguage": "Ngôn ngữ",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageVietnamese": "Tiếng Việt",
+  "settingsDefaultTimer": "Hẹn giờ mặc định",
+  "settingsAutoPlay": "Tự phát khi mở ứng dụng",
+
+  "commonOk": "OK",
+  "commonCancel": "Huỷ",
+  "commonDone": "Xong",
+  "commonSave": "Lưu",
+  "commonClose": "Đóng",
+  "commonPlay": "Phát",
+  "commonPause": "Tạm dừng",
+
+  "commonMinutes": "{count} phút",
+  "@commonMinutes": {
+    "placeholders": {
+      "count": { "type": "int", "format": "decimalPattern" }
+    }
+  },
+
+  "commonHours": "{count} giờ",
+  "@commonHours": {
+    "placeholders": {
+      "count": { "type": "int", "format": "decimalPattern" }
+    }
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "@@locale": "en",
+
+  "appName": "Lull",
+  "@appName": { "description": "The name of the application" },
+
+  "appTagline": "Sleep sounds for restful nights",
+  "@appTagline": { "description": "App tagline shown on splash / onboarding" },
+
+  "navHome": "Home",
+  "@navHome": { "description": "Bottom nav label for Home" },
+
+  "navFavorites": "Favorites",
+  "@navFavorites": { "description": "Bottom nav label for Favorites" },
+
+  "navTimer": "Timer",
+  "@navTimer": { "description": "Bottom nav label for Sleep Timer" },
+
+  "navSettings": "Settings",
+  "@navSettings": { "description": "Bottom nav label for Settings" },
+
+  "homeGreetingNight": "Good night",
+  "@homeGreetingNight": { "description": "Evening greeting on home screen" },
+
+  "homeSubtitle": "Pick a sound to drift off",
+  "@homeSubtitle": { "description": "Subtitle below greeting" },
+
+  "homeCategoryAll": "All",
+  "@homeCategoryAll": { "description": "Category chip: show all sounds" },
+
+  "homeCategoryNature": "Nature",
+  "@homeCategoryNature": { "description": "Category chip: nature sounds" },
+
+  "homeCategoryRain": "Rain",
+  "@homeCategoryRain": { "description": "Category chip: rain sounds" },
+
+  "homeCategoryWhiteNoise": "White Noise",
+  "@homeCategoryWhiteNoise": { "description": "Category chip: white noise" },
+
+  "homeCategoryUrban": "Urban",
+  "@homeCategoryUrban": { "description": "Category chip: urban sounds" },
+
+  "homeFeatured": "Featured",
+  "@homeFeatured": { "description": "Section header: featured sounds" },
+
+  "homeSearchHint": "Search sounds…",
+  "@homeSearchHint": { "description": "Search field placeholder" },
+
+  "playerNowPlaying": "Now Playing",
+  "@playerNowPlaying": { "description": "Label above track title in player" },
+
+  "playerVolume": "Volume",
+  "@playerVolume": { "description": "Slider label for volume" },
+
+  "playerIntensity": "Intensity",
+  "@playerIntensity": { "description": "Slider label for intensity" },
+
+  "playerLoop": "Loop",
+  "@playerLoop": { "description": "Loop toggle label" },
+
+  "playerAddToFavorites": "Add to Favorites",
+  "@playerAddToFavorites": { "description": "Accessibility label: heart button off" },
+
+  "playerRemoveFromFavorites": "Remove from Favorites",
+  "@playerRemoveFromFavorites": { "description": "Accessibility label: heart button on" },
+
+  "timerTitle": "Sleep Timer",
+  "@timerTitle": { "description": "Screen title for timer" },
+
+  "timerSetTimer": "Set Timer",
+  "@timerSetTimer": { "description": "Button to confirm timer selection" },
+
+  "timerNoTimer": "No timer set",
+  "@timerNoTimer": { "description": "Status when no timer is active" },
+
+  "timerActive": "Timer active",
+  "@timerActive": { "description": "Status when timer is counting down" },
+
+  "timerTimeRemaining": "{time} remaining",
+  "@timerTimeRemaining": {
+    "description": "Countdown label",
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+
+  "timer15min": "15 min",
+  "@timer15min": { "description": "Quick-select preset: 15 minutes" },
+
+  "timer30min": "30 min",
+  "@timer30min": { "description": "Quick-select preset: 30 minutes" },
+
+  "timer60min": "1 hour",
+  "@timer60min": { "description": "Quick-select preset: 1 hour" },
+
+  "timer90min": "90 min",
+  "@timer90min": { "description": "Quick-select preset: 90 minutes" },
+
+  "timerCustom": "Custom",
+  "@timerCustom": { "description": "Custom duration option label" },
+
+  "timerStop": "Stop",
+  "@timerStop": { "description": "Stop button on active timer" },
+
+  "timerFadeOut": "Fade out audio",
+  "@timerFadeOut": { "description": "Toggle label: fade audio before timer ends" },
+
+  "favoritesTitle": "Favorites",
+  "@favoritesTitle": { "description": "Screen title for favorites" },
+
+  "favoritesEmpty": "No favorites yet",
+  "@favoritesEmpty": { "description": "Empty state heading" },
+
+  "favoritesEmptySubtitle": "Tap the heart on any sound to save it here",
+  "@favoritesEmptySubtitle": { "description": "Empty state subtitle" },
+
+  "settingsTitle": "Settings",
+  "@settingsTitle": { "description": "Screen title for settings" },
+
+  "settingsSectionGeneral": "General",
+  "@settingsSectionGeneral": { "description": "Settings section header" },
+
+  "settingsSectionPlayback": "Playback",
+  "@settingsSectionPlayback": { "description": "Settings section header" },
+
+  "settingsLanguage": "Language",
+  "@settingsLanguage": { "description": "Setting row label for language" },
+
+  "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": { "description": "Language option: English" },
+
+  "settingsLanguageVietnamese": "Tiếng Việt",
+  "@settingsLanguageVietnamese": { "description": "Language option: Vietnamese" },
+
+  "settingsDefaultTimer": "Default Timer",
+  "@settingsDefaultTimer": { "description": "Setting row label for default timer duration" },
+
+  "settingsAutoPlay": "Auto-play on open",
+  "@settingsAutoPlay": { "description": "Toggle label for auto-play preference" },
+
+  "commonOk": "OK",
+  "@commonOk": { "description": "Generic OK button" },
+
+  "commonCancel": "Cancel",
+  "@commonCancel": { "description": "Generic Cancel button" },
+
+  "commonDone": "Done",
+  "@commonDone": { "description": "Generic Done button" },
+
+  "commonSave": "Save",
+  "@commonSave": { "description": "Generic Save button" },
+
+  "commonClose": "Close",
+  "@commonClose": { "description": "Generic Close button / tooltip" },
+
+  "commonPlay": "Play",
+  "@commonPlay": { "description": "Accessibility label for play button" },
+
+  "commonPause": "Pause",
+  "@commonPause": { "description": "Accessibility label for pause button" },
+
+  "commonMinutes": "{count, plural, one{{count} minute} other{{count} minutes}}",
+  "@commonMinutes": {
+    "description": "Pluralised minutes label",
+    "placeholders": {
+      "count": { "type": "int", "format": "decimalPattern" }
+    }
+  },
+
+  "commonHours": "{count, plural, one{{count} hour} other{{count} hours}}",
+  "@commonHours": {
+    "description": "Pluralised hours label",
+    "placeholders": {
+      "count": { "type": "int", "format": "decimalPattern" }
+    }
+  }
+}
