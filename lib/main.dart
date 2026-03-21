@@ -2,25 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/l10n/locale_provider.dart';
+import 'providers/locale_provider.dart';
+import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final container = ProviderContainer();
-  await container.read(localeProvider.notifier).init();
-  runApp(UncontrolledProviderScope(container: container, child: const LullApp()));
+  runApp(const ProviderScope(child: LullApp()));
 }
 
-class LullApp extends ConsumerWidget {
+class LullApp extends ConsumerStatefulWidget {
   const LullApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(localeProvider);
+  ConsumerState<LullApp> createState() => _LullAppState();
+}
 
-    return MaterialApp(
+class _LullAppState extends ConsumerState<LullApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Load persisted locale from storage on first frame.
+    Future.microtask(() => ref.read(localeProvider.notifier).init());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = ref.watch(localeProvider);
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
       title: 'Lull',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
@@ -32,7 +44,7 @@ class LullApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: Container(),
+      routerConfig: router,
     );
   }
 }
