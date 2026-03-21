@@ -170,53 +170,71 @@ abstract class AppLocalizations {
   /// **'Good night'**
   String get homeGreetingNight;
 
-  /// Subtitle below greeting
+  /// Subtitle below greeting; matches 'Gợi ý cho bạn'
   ///
   /// In en, this message translates to:
-  /// **'Pick a sound to drift off'**
+  /// **'Suggestions for you'**
   String get homeSubtitle;
 
-  /// Category chip: show all sounds
+  /// Main home title part 1; matches 'Khám Phá'
   ///
   /// In en, this message translates to:
-  /// **'All'**
-  String get homeCategoryAll;
+  /// **'Discover\n'**
+  String get homeTitleMain;
 
-  /// Category chip: nature sounds
+  /// Main home title part 2, in accent color; matches 'Sự Bình Yên'
+  ///
+  /// In en, this message translates to:
+  /// **'Serenity'**
+  String get homeTitlePrimary;
+
+  /// Home rain card title, matches: 'Tiếng mưa'
+  ///
+  /// In en, this message translates to:
+  /// **'Rain Sounds'**
+  String get homeRainTitle;
+
+  /// Home rain card description, matches: 'Âm thanh mưa thư giãn'
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxing rain, storms, and drizzle for restful sleep'**
+  String get homeRainDescription;
+
+  /// Home nature card title, matches: 'Thiên nhiên'
   ///
   /// In en, this message translates to:
   /// **'Nature'**
-  String get homeCategoryNature;
+  String get homeNatureTitle;
 
-  /// Category chip: rain sounds
+  /// Home nature card description, matches: 'Âm thanh thiên nhiên thư giãn'
   ///
   /// In en, this message translates to:
-  /// **'Rain'**
-  String get homeCategoryRain;
+  /// **'Calming forests, rivers, ocean waves & birdsong'**
+  String get homeNatureDescription;
 
-  /// Category chip: thunder sounds
-  ///
-  /// In en, this message translates to:
-  /// **'Thunder'**
-  String get homeCategoryThunder;
-
-  /// Category chip: white noise
+  /// Home white noise card title, matches: 'Tiếng ồn trắng'
   ///
   /// In en, this message translates to:
   /// **'White Noise'**
-  String get homeCategoryWhiteNoise;
+  String get homeWhiteNoiseTitle;
 
-  /// Category chip: urban sounds
+  /// Home white noise card description, matches: 'Âm thanh ồn trắng giúp ngủ hoặc tập trung'
   ///
   /// In en, this message translates to:
-  /// **'Urban'**
-  String get homeCategoryUrban;
+  /// **'Pure white, pink & brown noise for deep focus or sleep'**
+  String get homeWhiteNoiseDescription;
 
-  /// Section header: featured sounds
+  /// Home thunder card title, matches: 'Sấm sét'
   ///
   /// In en, this message translates to:
-  /// **'Featured'**
-  String get homeFeatured;
+  /// **'Thunder'**
+  String get homeThunderTitle;
+
+  /// Home thunder card description, matches: 'Âm thanh sấm sét và mưa đêm'
+  ///
+  /// In en, this message translates to:
+  /// **'Distant rumbles, thunderstorms & night rain'**
+  String get homeThunderDescription;
 
   /// Search field placeholder
   ///

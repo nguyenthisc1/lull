@@ -45,28 +45,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeGreetingNight => 'Good night';
 
   @override
-  String get homeSubtitle => 'Pick a sound to drift off';
+  String get homeSubtitle => 'Suggestions for you';
 
   @override
-  String get homeCategoryAll => 'All';
+  String get homeTitleMain => 'Discover\n';
 
   @override
-  String get homeCategoryNature => 'Nature';
+  String get homeTitlePrimary => 'Serenity';
 
   @override
-  String get homeCategoryRain => 'Rain';
+  String get homeRainTitle => 'Rain Sounds';
 
   @override
-  String get homeCategoryThunder => 'Thunder';
+  String get homeRainDescription =>
+      'Relaxing rain, storms, and drizzle for restful sleep';
 
   @override
-  String get homeCategoryWhiteNoise => 'White Noise';
+  String get homeNatureTitle => 'Nature';
 
   @override
-  String get homeCategoryUrban => 'Urban';
+  String get homeNatureDescription =>
+      'Calming forests, rivers, ocean waves & birdsong';
 
   @override
-  String get homeFeatured => 'Featured';
+  String get homeWhiteNoiseTitle => 'White Noise';
+
+  @override
+  String get homeWhiteNoiseDescription =>
+      'Pure white, pink & brown noise for deep focus or sleep';
+
+  @override
+  String get homeThunderTitle => 'Thunder';
+
+  @override
+  String get homeThunderDescription =>
+      'Distant rumbles, thunderstorms & night rain';
 
   @override
   String get homeSearchHint => 'Search sounds…';

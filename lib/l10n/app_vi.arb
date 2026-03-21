@@ -1,5 +1,12 @@
 {
   "@@locale": "vi",
+
+  "appName": "Lull",
+  "@appName": { "description": "Tên ứng dụng" },
+
+  "appTagline": "Âm thanh ru ngủ cho những đêm ngon giấc",
+  "@appTagline": { "description": "Tagline của ứng dụng, hiển thị trên màn hình splash/onboarding" },
+
   "splashWordmark": "LULL",
   "@splashWordmark": { "description": "Dấu ấn thương hiệu ứng dụng trên màn hình khởi động, chữ in hoa toàn bộ." },
 
@@ -7,86 +14,189 @@
   "@splashDisplayHeadline": { "description": "Tiêu đề lớn trên màn hình khởi động, hiển thị với hiệu ứng chữ gradient." },
 
   "splashTagline": "Khoa học về sự êm dịu",
-  "@splashTagline": { "description": "Câu tagline hỗ trợ xuất hiện dưới logo trên màn hình khởi động." },
+  "@splashTagline": { "description": "Tagline hỗ trợ dưới logo trên màn hình khởi động." },
 
   "splashGetStarted": "Bắt đầu",
   "@splashGetStarted": { "description": "Nút CTA để vào ứng dụng từ màn hình khởi động." },
 
   "splashStepIntoTheQuiet": "BƯỚC VÀO YÊN LẶNG",
-  "@splashStepIntoTheQuiet": { "description": "Câu chữ truyền động lực hiển thị dưới cùng của màn hình khởi động." },
-
-  "appName": "Lull",
-  "appTagline": "Âm thanh thư giãn cho giấc ngủ ngon",
+  "@splashStepIntoTheQuiet": { "description": "Chữ động lực hiển thị dưới cùng màn hình splash." },
 
   "navHome": "Trang chủ",
+  "@navHome": { "description": "Nhãn thanh điều hướng: Trang chủ" },
+
   "navFavorites": "Yêu thích",
+  "@navFavorites": { "description": "Nhãn thanh điều hướng: Yêu thích" },
+
   "navTimer": "Hẹn giờ",
+  "@navTimer": { "description": "Nhãn thanh điều hướng: Hẹn giờ ngủ" },
+
   "navSettings": "Cài đặt",
+  "@navSettings": { "description": "Nhãn thanh điều hướng: Cài đặt" },
 
   "homeGreetingNight": "Chúc ngủ ngon",
-  "homeSubtitle": "Chọn âm thanh để đi vào giấc ngủ",
+  "@homeGreetingNight": { "description": "Chào buổi tối trên màn hình chính" },
 
-  "homeCategoryAll": "Tất cả",
-  "homeCategoryNature": "Thiên nhiên",
-  "homeCategoryRain": "Mưa",
-  "homeCategoryThunder": "Sấm sét",
-  "homeCategoryWhiteNoise": "Tiếng ồn trắng",
-  "homeCategoryUrban": "Đô thị",
+  "homeSubtitle": "Gợi ý cho bạn",
+  "@homeSubtitle": { "description": "Tiêu đề phụ dưới lời chào; giống 'Gợi ý cho bạn'" },
 
-  "homeFeatured": "Nổi bật",
+  "homeTitleMain": "Khám Phá\n",
+  "@homeTitleMain": { "description": "Tiêu đề chính phần 1; giống 'Khám Phá'" },
+
+  "homeTitlePrimary": "Sự Bình Yên",
+  "@homeTitlePrimary": { "description": "Tiêu đề chính phần 2, màu nhấn; giống 'Sự Bình Yên'" },
+
+  "homeRainTitle": "Tiếng mưa",
+  "@homeRainTitle": {"description": "Tiêu đề thẻ mưa trên trang chủ, giống: 'Tiếng mưa'"},
+
+  "homeRainDescription": "Âm thanh mưa thư giãn cho giấc ngủ ngon",
+  "@homeRainDescription": {"description": "Mô tả thẻ mưa: 'Âm thanh mưa thư giãn'"},
+
+  "homeNatureTitle": "Thiên nhiên",
+  "@homeNatureTitle": {"description": "Tiêu đề thẻ thiên nhiên, giống: 'Thiên nhiên'"},
+
+  "homeNatureDescription": "Âm thanh thiên nhiên thư giãn — rừng, sông, biển & chim hót",
+  "@homeNatureDescription": {"description": "Mô tả thẻ thiên nhiên: 'Âm thanh thiên nhiên thư giãn'"},
+
+  "homeWhiteNoiseTitle": "Tiếng ồn trắng",
+  "@homeWhiteNoiseTitle": {"description": "Tiêu đề thẻ white noise, giống: 'Tiếng ồn trắng'"},
+
+  "homeWhiteNoiseDescription": "Tiếng ồn trắng, hồng & nâu giúp ngủ sâu hoặc tập trung",
+  "@homeWhiteNoiseDescription": {"description": "Mô tả white noise: 'Âm thanh ồn trắng giúp ngủ hoặc tập trung'"},
+
+  "homeThunderTitle": "Sấm sét",
+  "@homeThunderTitle": {"description": "Tiêu đề thẻ sấm sét, giống: 'Sấm sét'"},
+
+  "homeThunderDescription": "Âm thanh sấm sét xa, mưa đêm và dông bão",
+  "@homeThunderDescription": {"description": "Mô tả thẻ sấm sét: 'Âm thanh sấm sét và mưa đêm'"},
+
   "homeSearchHint": "Tìm âm thanh…",
+  "@homeSearchHint": { "description": "Gợi ý tìm kiếm trên thanh search" },
 
   "playerNowPlaying": "Đang phát",
+  "@playerNowPlaying": { "description": "Nhãn phía trên tên bài đang phát" },
+
   "playerVolume": "Âm lượng",
+  "@playerVolume": { "description": "Nhãn thanh trượt điều chỉnh âm lượng" },
+
   "playerIntensity": "Cường độ",
+  "@playerIntensity": { "description": "Nhãn thanh trượt điều chỉnh cường độ" },
+
   "playerLoop": "Lặp lại",
+  "@playerLoop": { "description": "Nhãn chuyển đổi lặp lại" },
+
   "playerAddToFavorites": "Thêm vào yêu thích",
-  "playerRemoveFromFavorites": "Xoá khỏi yêu thích",
+  "@playerAddToFavorites": { "description": "Nhãn tiếp cận: nút trái tim chưa chọn" },
+
+  "playerRemoveFromFavorites": "Xóa khỏi yêu thích",
+  "@playerRemoveFromFavorites": { "description": "Nhãn tiếp cận: nút trái tim đã chọn" },
 
   "timerTitle": "Hẹn giờ ngủ",
+  "@timerTitle": { "description": "Tiêu đề màn hình hẹn giờ" },
+
   "timerSetTimer": "Đặt hẹn giờ",
+  "@timerSetTimer": { "description": "Nút xác nhận chọn thời lượng hẹn giờ" },
+
   "timerNoTimer": "Chưa đặt hẹn giờ",
+  "@timerNoTimer": { "description": "Trạng thái chưa có hẹn giờ" },
+
   "timerActive": "Đang đếm ngược",
+  "@timerActive": { "description": "Trạng thái đang đếm ngược hẹn giờ" },
+
   "timerTimeRemaining": "Còn lại {time}",
+  "@timerTimeRemaining": {
+    "description": "Nhãn đồng hồ đếm ngược",
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
 
   "timer15min": "15 phút",
+  "@timer15min": { "description": "Thiết lập nhanh: 15 phút" },
+
   "timer30min": "30 phút",
+  "@timer30min": { "description": "Thiết lập nhanh: 30 phút" },
+
   "timer60min": "1 giờ",
+  "@timer60min": { "description": "Thiết lập nhanh: 1 giờ" },
+
   "timer90min": "90 phút",
+  "@timer90min": { "description": "Thiết lập nhanh: 90 phút" },
+
   "timerCustom": "Tuỳ chỉnh",
+  "@timerCustom": { "description": "Nhãn chọn thời lượng tuỳ chỉnh" },
+
   "timerStop": "Dừng",
+  "@timerStop": { "description": "Nút dừng khi hẹn giờ đang chạy" },
+
   "timerFadeOut": "Giảm dần âm thanh",
+  "@timerFadeOut": { "description": "Chuyển đổi: âm thanh giảm dần gần hết giờ" },
 
   "favoritesTitle": "Yêu thích",
-  "favoritesEmpty": "Chưa có mục yêu thích",
+  "@favoritesTitle": { "description": "Tiêu đề màn hình yêu thích" },
+
+  "favoritesEmpty": "Chưa có yêu thích nào",
+  "@favoritesEmpty": { "description": "Tiêu đề trạng thái rỗng" },
+
   "favoritesEmptySubtitle": "Nhấn trái tim trên bất kỳ âm thanh nào để lưu tại đây",
+  "@favoritesEmptySubtitle": { "description": "Phụ đề trạng thái rỗng" },
 
   "settingsTitle": "Cài đặt",
+  "@settingsTitle": { "description": "Tiêu đề màn hình cài đặt" },
+
   "settingsSectionGeneral": "Chung",
+  "@settingsSectionGeneral": { "description": "Tiêu đề mục settings" },
+
   "settingsSectionPlayback": "Phát lại",
+  "@settingsSectionPlayback": { "description": "Tiêu đề mục settings" },
+
   "settingsLanguage": "Ngôn ngữ",
+  "@settingsLanguage": { "description": "Nhãn chọn ngôn ngữ" },
+
   "settingsLanguageEnglish": "English",
+  "@settingsLanguageEnglish": { "description": "Tùy chọn ngôn ngữ: Tiếng Anh" },
+
   "settingsLanguageVietnamese": "Tiếng Việt",
+  "@settingsLanguageVietnamese": { "description": "Tùy chọn ngôn ngữ: Tiếng Việt" },
+
   "settingsDefaultTimer": "Hẹn giờ mặc định",
+  "@settingsDefaultTimer": { "description": "Nhãn chọn thời lượng hẹn giờ mặc định" },
+
   "settingsAutoPlay": "Tự phát khi mở ứng dụng",
+  "@settingsAutoPlay": { "description": "Chuyển đổi tự động phát khi mở ứng dụng" },
 
   "commonOk": "OK",
-  "commonCancel": "Huỷ",
-  "commonDone": "Xong",
-  "commonSave": "Lưu",
-  "commonClose": "Đóng",
-  "commonPlay": "Phát",
-  "commonPause": "Tạm dừng",
+  "@commonOk": { "description": "Nút đồng ý" },
 
-  "commonMinutes": "{count} phút",
+  "commonCancel": "Huỷ",
+  "@commonCancel": { "description": "Nút Huỷ bỏ" },
+
+  "commonDone": "Xong",
+  "@commonDone": { "description": "Nút Hoàn thành" },
+
+  "commonSave": "Lưu",
+  "@commonSave": { "description": "Nút Lưu" },
+
+  "commonClose": "Đóng",
+  "@commonClose": { "description": "Nút hoặc tooltip đóng" },
+
+  "commonPlay": "Phát",
+  "@commonPlay": { "description": "Nhãn tiếp cận nút phát" },
+
+  "commonPause": "Tạm dừng",
+  "@commonPause": { "description": "Nhãn tiếp cận nút tạm dừng" },
+
+  "commonMinutes": "{count, plural, one{{count} phút} other{{count} phút}}",
   "@commonMinutes": {
+    "description": "Nhãn phút, dạng số nhiều",
     "placeholders": {
       "count": { "type": "int", "format": "decimalPattern" }
     }
   },
 
-  "commonHours": "{count} giờ",
+  "commonHours": "{count, plural, one{{count} giờ} other{{count} giờ}}",
   "@commonHours": {
+    "description": "Nhãn giờ, dạng số nhiều",
     "placeholders": {
       "count": { "type": "int", "format": "decimalPattern" }
     }

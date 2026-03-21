@@ -34,29 +34,38 @@
   "homeGreetingNight": "Good night",
   "@homeGreetingNight": { "description": "Evening greeting on home screen" },
 
-  "homeSubtitle": "Pick a sound to drift off",
-  "@homeSubtitle": { "description": "Subtitle below greeting" },
+  "homeSubtitle": "Suggestions for you",
+  "@homeSubtitle": { "description": "Subtitle below greeting; matches 'Gợi ý cho bạn'" },
 
-  "homeCategoryAll": "All",
-  "@homeCategoryAll": { "description": "Category chip: show all sounds" },
+  "homeTitleMain": "Discover\n",
+  "@homeTitleMain": { "description": "Main home title part 1; matches 'Khám Phá'" },
 
-  "homeCategoryNature": "Nature",
-  "@homeCategoryNature": { "description": "Category chip: nature sounds" },
+  "homeTitlePrimary": "Serenity",
+  "@homeTitlePrimary": { "description": "Main home title part 2, in accent color; matches 'Sự Bình Yên'" },
 
-  "homeCategoryRain": "Rain",
-  "@homeCategoryRain": { "description": "Category chip: rain sounds" },
+  "homeRainTitle": "Rain Sounds",
+  "@homeRainTitle": {"description": "Home rain card title, matches: 'Tiếng mưa'"},
 
-  "homeCategoryThunder": "Thunder",
-  "@homeCategoryThunder": { "description": "Category chip: thunder sounds" },
+  "homeRainDescription": "Relaxing rain, storms, and drizzle for restful sleep",
+  "@homeRainDescription": {"description": "Home rain card description, matches: 'Âm thanh mưa thư giãn'"},
 
-  "homeCategoryWhiteNoise": "White Noise",
-  "@homeCategoryWhiteNoise": { "description": "Category chip: white noise" },
+  "homeNatureTitle": "Nature",
+  "@homeNatureTitle": {"description": "Home nature card title, matches: 'Thiên nhiên'"},
 
-  "homeCategoryUrban": "Urban",
-  "@homeCategoryUrban": { "description": "Category chip: urban sounds" },
+  "homeNatureDescription": "Calming forests, rivers, ocean waves & birdsong",
+  "@homeNatureDescription": {"description": "Home nature card description, matches: 'Âm thanh thiên nhiên thư giãn'"},
 
-  "homeFeatured": "Featured",
-  "@homeFeatured": { "description": "Section header: featured sounds" },
+  "homeWhiteNoiseTitle": "White Noise",
+  "@homeWhiteNoiseTitle": {"description": "Home white noise card title, matches: 'Tiếng ồn trắng'"},
+
+  "homeWhiteNoiseDescription": "Pure white, pink & brown noise for deep focus or sleep",
+  "@homeWhiteNoiseDescription": {"description": "Home white noise card description, matches: 'Âm thanh ồn trắng giúp ngủ hoặc tập trung'"},
+
+  "homeThunderTitle": "Thunder",
+  "@homeThunderTitle": {"description": "Home thunder card title, matches: 'Sấm sét'"},
+
+  "homeThunderDescription": "Distant rumbles, thunderstorms & night rain",
+  "@homeThunderDescription": {"description": "Home thunder card description, matches: 'Âm thanh sấm sét và mưa đêm'"},
 
   "homeSearchHint": "Search sounds…",
   "@homeSearchHint": { "description": "Search field placeholder" },

@@ -12,7 +12,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appName => 'Lull';
 
   @override
-  String get appTagline => 'Âm thanh thư giãn cho giấc ngủ ngon';
+  String get appTagline => 'Âm thanh ru ngủ cho những đêm ngon giấc';
 
   @override
   String get splashWordmark => 'LULL';
@@ -45,28 +45,40 @@ class AppLocalizationsVi extends AppLocalizations {
   String get homeGreetingNight => 'Chúc ngủ ngon';
 
   @override
-  String get homeSubtitle => 'Chọn âm thanh để đi vào giấc ngủ';
+  String get homeSubtitle => 'Gợi ý cho bạn';
 
   @override
-  String get homeCategoryAll => 'Tất cả';
+  String get homeTitleMain => 'Khám Phá\n';
 
   @override
-  String get homeCategoryNature => 'Thiên nhiên';
+  String get homeTitlePrimary => 'Sự Bình Yên';
 
   @override
-  String get homeCategoryRain => 'Mưa';
+  String get homeRainTitle => 'Tiếng mưa';
 
   @override
-  String get homeCategoryThunder => 'Sấm sét';
+  String get homeRainDescription => 'Âm thanh mưa thư giãn cho giấc ngủ ngon';
 
   @override
-  String get homeCategoryWhiteNoise => 'Tiếng ồn trắng';
+  String get homeNatureTitle => 'Thiên nhiên';
 
   @override
-  String get homeCategoryUrban => 'Đô thị';
+  String get homeNatureDescription =>
+      'Âm thanh thiên nhiên thư giãn — rừng, sông, biển & chim hót';
 
   @override
-  String get homeFeatured => 'Nổi bật';
+  String get homeWhiteNoiseTitle => 'Tiếng ồn trắng';
+
+  @override
+  String get homeWhiteNoiseDescription =>
+      'Tiếng ồn trắng, hồng & nâu giúp ngủ sâu hoặc tập trung';
+
+  @override
+  String get homeThunderTitle => 'Sấm sét';
+
+  @override
+  String get homeThunderDescription =>
+      'Âm thanh sấm sét xa, mưa đêm và dông bão';
 
   @override
   String get homeSearchHint => 'Tìm âm thanh…';
@@ -87,7 +99,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get playerAddToFavorites => 'Thêm vào yêu thích';
 
   @override
-  String get playerRemoveFromFavorites => 'Xoá khỏi yêu thích';
+  String get playerRemoveFromFavorites => 'Xóa khỏi yêu thích';
 
   @override
   String get timerTitle => 'Hẹn giờ ngủ';
@@ -131,7 +143,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get favoritesTitle => 'Yêu thích';
 
   @override
-  String get favoritesEmpty => 'Chưa có mục yêu thích';
+  String get favoritesEmpty => 'Chưa có yêu thích nào';
 
   @override
   String get favoritesEmptySubtitle =>
@@ -188,7 +200,13 @@ class AppLocalizationsVi extends AppLocalizations {
         intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    return '$countString phút';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString phút',
+      one: '$countString phút',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -197,6 +215,12 @@ class AppLocalizationsVi extends AppLocalizations {
         intl.NumberFormat.decimalPattern(localeName);
     final String countString = countNumberFormat.format(count);
 
-    return '$countString giờ';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString giờ',
+      one: '$countString giờ',
+    );
+    return '$_temp0';
   }
 }
