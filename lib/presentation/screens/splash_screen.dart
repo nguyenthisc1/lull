@@ -4,12 +4,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lull/l10n/app_localizations.dart';
 
 import '../../core/constants/design_tokens.dart';
 import '../../core/router/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
-import '../../data/datasources/onboarding_storage.dart';
+import '../../repositories/onboarding_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -49,13 +50,13 @@ class _SplashScreenState extends State<SplashScreen>
       curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
     );
 
-    _slideUp = Tween<Offset>(
-      begin: const Offset(0, 0.04),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _enterController,
-      curve: const Interval(0.0, 0.7, curve: Curves.easeOutCubic),
-    ));
+    _slideUp = Tween<Offset>(begin: const Offset(0, 0.04), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _enterController,
+            curve: const Interval(0.0, 0.7, curve: Curves.easeOutCubic),
+          ),
+        );
 
     _moonScale = Tween<double>(begin: 0.88, end: 1.0).animate(
       CurvedAnimation(
@@ -87,6 +88,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);
     final bottom = MediaQuery.paddingOf(context).bottom;
 
@@ -110,10 +112,7 @@ class _SplashScreenState extends State<SplashScreen>
           ),
 
           // ── Starry sky texture ──────────────────────────────────────────
-          CustomPaint(
-            size: size,
-            painter: _StarryPainter(),
-          ),
+          CustomPaint(size: size, painter: _StarryPainter()),
 
           // ── Bottom-left ambient orb ─────────────────────────────────────
           Positioned(
@@ -146,10 +145,7 @@ class _SplashScreenState extends State<SplashScreen>
                 gradient: RadialGradient(
                   center: Alignment.center,
                   radius: 0.8,
-                  colors: [
-                    Color(0x1FCEB1FF),
-                    Color(0x000D0D1A),
-                  ],
+                  colors: [Color(0x1FCEB1FF), Color(0x000D0D1A)],
                 ),
               ),
             ),
@@ -165,7 +161,9 @@ class _SplashScreenState extends State<SplashScreen>
                   children: [
                     // Top wordmark row
                     Padding(
-                      padding: const EdgeInsets.only(top: DesignTokens.spacing5),
+                      padding: const EdgeInsets.only(
+                        top: DesignTokens.spacing5,
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -176,7 +174,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                           const SizedBox(width: DesignTokens.spacing2),
                           Text(
-                            'LULL',
+                            l10n.splashDisplayHeadline,
                             style: AppTypography.labelLarge.copyWith(
                               color: AppColors.primary,
                               letterSpacing: 6,
@@ -208,14 +206,16 @@ class _SplashScreenState extends State<SplashScreen>
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: AppColors.primary
-                                              .withValues(alpha: 0.20),
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.20,
+                                          ),
                                           width: 1.5,
                                         ),
                                         gradient: RadialGradient(
                                           colors: [
                                             AppColors.primary.withValues(
-                                                alpha: 0.06 * _glowPulse.value),
+                                              alpha: 0.06 * _glowPulse.value,
+                                            ),
                                             Colors.transparent,
                                           ],
                                         ),
@@ -226,14 +226,17 @@ class _SplashScreenState extends State<SplashScreen>
                                     ClipOval(
                                       child: BackdropFilter(
                                         filter: ImageFilter.blur(
-                                            sigmaX: 4, sigmaY: 4),
+                                          sigmaX: 4,
+                                          sigmaY: 4,
+                                        ),
                                         child: Container(
                                           width: 192,
                                           height: 192,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: AppColors.primary
-                                                .withValues(alpha: 0.05),
+                                            color: AppColors.primary.withValues(
+                                              alpha: 0.05,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -243,10 +246,10 @@ class _SplashScreenState extends State<SplashScreen>
                                     ShaderMask(
                                       shaderCallback: (bounds) =>
                                           const LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: AppColors.primaryGradient,
-                                      ).createShader(bounds),
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: AppColors.primaryGradient,
+                                          ).createShader(bounds),
                                       child: Icon(
                                         Icons.dark_mode_rounded,
                                         size: 88,
@@ -263,17 +266,13 @@ class _SplashScreenState extends State<SplashScreen>
 
                           // ── Display headline ──────────────────────────
                           ShaderMask(
-                            shaderCallback: (bounds) =>
-                                const LinearGradient(
+                            shaderCallback: (bounds) => const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [
-                                Color(0xFFE8DAFF),
-                                Color(0xFFCEB1FF),
-                              ],
+                              colors: [Color(0xFFE8DAFF), Color(0xFFCEB1FF)],
                             ).createShader(bounds),
                             child: Text(
-                              'Lull',
+                              l10n.splashDisplayHeadline,
                               style: AppTypography.displayLarge.copyWith(
                                 fontSize: 72,
                                 fontWeight: FontWeight.w800,
@@ -288,10 +287,11 @@ class _SplashScreenState extends State<SplashScreen>
 
                           // ── Tagline ───────────────────────────────────
                           Text(
-                            'The Science of Softness',
+                            l10n.splashTagline,
                             style: AppTypography.bodyMedium.copyWith(
-                              color: AppColors.onSurfaceVariant
-                                  .withValues(alpha: 0.60),
+                              color: AppColors.onSurfaceVariant.withValues(
+                                alpha: 0.60,
+                              ),
                               letterSpacing: 3,
                               fontWeight: FontWeight.w300,
                             ),
@@ -317,12 +317,13 @@ class _SplashScreenState extends State<SplashScreen>
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: DesignTokens.spacing6),
+                      horizontal: DesignTokens.spacing6,
+                    ),
                     child: _GetStartedButton(onTap: _onGetStarted),
                   ),
                   const SizedBox(height: DesignTokens.spacing5),
                   Text(
-                    'STEP INTO THE QUIET',
+                    l10n.splashStepIntoTheQuiet,
                     style: AppTypography.labelSmall.copyWith(
                       color: AppColors.onSurfaceVariant.withValues(alpha: 0.35),
                       letterSpacing: 4,
@@ -366,9 +367,10 @@ class _GetStartedButtonState extends State<_GetStartedButton>
     _scale = Tween<double>(begin: 1.0, end: 1.04).animate(
       CurvedAnimation(parent: _hoverController, curve: Curves.easeOutCubic),
     );
-    _glowOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _hoverController, curve: Curves.easeOut),
-    );
+    _glowOpacity = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _hoverController, curve: Curves.easeOut));
   }
 
   @override
@@ -379,6 +381,7 @@ class _GetStartedButtonState extends State<_GetStartedButton>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return GestureDetector(
       onTapDown: (_) => _hoverController.forward(),
       onTapUp: (_) {
@@ -444,8 +447,9 @@ class _GetStartedButtonState extends State<_GetStartedButton>
                       gradient: LinearGradient(
                         colors: [
                           Colors.transparent,
-                          AppColors.primary
-                              .withValues(alpha: 0.40 * _glowOpacity.value),
+                          AppColors.primary.withValues(
+                            alpha: 0.40 * _glowOpacity.value,
+                          ),
                           Colors.transparent,
                         ],
                       ),
@@ -457,15 +461,15 @@ class _GetStartedButtonState extends State<_GetStartedButton>
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DesignTokens.spacing6),
+            padding: const EdgeInsets.symmetric(
+              horizontal: DesignTokens.spacing6,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Get Started',
-                  style: AppTypography.titleSmall.copyWith(
-                    letterSpacing: 0.5,
-                  ),
+                  l10n.splashGetStarted,
+                  style: AppTypography.titleSmall.copyWith(letterSpacing: 0.5),
                 ),
                 const SizedBox(width: DesignTokens.spacing3),
                 const Icon(
