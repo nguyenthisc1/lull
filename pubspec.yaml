@@ -63,5 +63,7 @@ flutter:
   generate: true
 
   assets:
-    - assets/sounds/
+    - assets/sounds/nature/
+    - assets/sounds/rain/
+    - assets/sounds/thunder/
     - assets/images/
