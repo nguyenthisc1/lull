@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract final class DesignTokens {
   // ── Border Radius ─────────────────────────────────────────────────────────
+  static const double radiusXxl = 64.0;
   static const double radiusXl = 48.0;
   static const double radiusLg = 32.0;
   static const double radiusMd = 20.0;
