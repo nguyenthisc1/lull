@@ -1,5 +1,19 @@
 {
   "@@locale": "vi",
+  "splashWordmark": "LULL",
+  "@splashWordmark": { "description": "Dấu ấn thương hiệu ứng dụng trên màn hình khởi động, chữ in hoa toàn bộ." },
+
+  "splashDisplayHeadline": "Lull",
+  "@splashDisplayHeadline": { "description": "Tiêu đề lớn trên màn hình khởi động, hiển thị với hiệu ứng chữ gradient." },
+
+  "splashTagline": "Khoa học về sự êm dịu",
+  "@splashTagline": { "description": "Câu tagline hỗ trợ xuất hiện dưới logo trên màn hình khởi động." },
+
+  "splashGetStarted": "Bắt đầu",
+  "@splashGetStarted": { "description": "Nút CTA để vào ứng dụng từ màn hình khởi động." },
+
+  "splashStepIntoTheQuiet": "BƯỚC VÀO YÊN LẶNG",
+  "@splashStepIntoTheQuiet": { "description": "Câu chữ truyền động lực hiển thị dưới cùng của màn hình khởi động." },
 
   "appName": "Lull",
   "appTagline": "Âm thanh thư giãn cho giấc ngủ ngon",
@@ -15,6 +29,7 @@
   "homeCategoryAll": "Tất cả",
   "homeCategoryNature": "Thiên nhiên",
   "homeCategoryRain": "Mưa",
+  "homeCategoryThunder": "Sấm sét",
   "homeCategoryWhiteNoise": "Tiếng ồn trắng",
   "homeCategoryUrban": "Đô thị",
 

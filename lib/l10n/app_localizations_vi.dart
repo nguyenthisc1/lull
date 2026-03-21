@@ -15,6 +15,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appTagline => 'Âm thanh thư giãn cho giấc ngủ ngon';
 
   @override
+  String get splashWordmark => 'LULL';
+
+  @override
+  String get splashDisplayHeadline => 'Lull';
+
+  @override
+  String get splashTagline => 'Khoa học về sự êm dịu';
+
+  @override
+  String get splashGetStarted => 'Bắt đầu';
+
+  @override
+  String get splashStepIntoTheQuiet => 'BƯỚC VÀO YÊN LẶNG';
+
+  @override
   String get navHome => 'Trang chủ';
 
   @override
@@ -40,6 +55,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get homeCategoryRain => 'Mưa';
+
+  @override
+  String get homeCategoryThunder => 'Sấm sét';
 
   @override
   String get homeCategoryWhiteNoise => 'Tiếng ồn trắng';

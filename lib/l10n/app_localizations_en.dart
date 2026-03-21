@@ -15,6 +15,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTagline => 'Sleep sounds for restful nights';
 
   @override
+  String get splashWordmark => 'LULL';
+
+  @override
+  String get splashDisplayHeadline => 'Lull';
+
+  @override
+  String get splashTagline => 'The Science of Softness';
+
+  @override
+  String get splashGetStarted => 'Get Started';
+
+  @override
+  String get splashStepIntoTheQuiet => 'STEP INTO THE QUIET';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -40,6 +55,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeCategoryRain => 'Rain';
+
+  @override
+  String get homeCategoryThunder => 'Thunder';
 
   @override
   String get homeCategoryWhiteNoise => 'White Noise';

@@ -6,7 +6,20 @@
 
   "appTagline": "Sleep sounds for restful nights",
   "@appTagline": { "description": "App tagline shown on splash / onboarding" },
+  "splashWordmark": "LULL",
+  "@splashWordmark": { "description": "Splash screen app wordmark, all caps." },
 
+  "splashDisplayHeadline": "Lull",
+  "@splashDisplayHeadline": { "description": "Splash screen large app headline, displayed in gradient text." },
+
+  "splashTagline": "The Science of Softness",
+  "@splashTagline": { "description": "Splash screen supporting tagline under logo." },
+
+  "splashGetStarted": "Get Started",
+  "@splashGetStarted": { "description": "CTA button text for entering the app from splash screen." },
+
+  "splashStepIntoTheQuiet": "STEP INTO THE QUIET",
+  "@splashStepIntoTheQuiet": { "description": "Motivational text shown at the bottom of the splash screen." },
   "navHome": "Home",
   "@navHome": { "description": "Bottom nav label for Home" },
 
@@ -18,7 +31,6 @@
 
   "navSettings": "Settings",
   "@navSettings": { "description": "Bottom nav label for Settings" },
-
   "homeGreetingNight": "Good night",
   "@homeGreetingNight": { "description": "Evening greeting on home screen" },
 
@@ -34,6 +46,9 @@
   "homeCategoryRain": "Rain",
   "@homeCategoryRain": { "description": "Category chip: rain sounds" },
 
+  "homeCategoryThunder": "Thunder",
+  "@homeCategoryThunder": { "description": "Category chip: thunder sounds" },
+
   "homeCategoryWhiteNoise": "White Noise",
   "@homeCategoryWhiteNoise": { "description": "Category chip: white noise" },
 
@@ -45,7 +60,6 @@
 
   "homeSearchHint": "Search sounds…",
   "@homeSearchHint": { "description": "Search field placeholder" },
-
   "playerNowPlaying": "Now Playing",
   "@playerNowPlaying": { "description": "Label above track title in player" },
 
@@ -63,7 +77,6 @@
 
   "playerRemoveFromFavorites": "Remove from Favorites",
   "@playerRemoveFromFavorites": { "description": "Accessibility label: heart button on" },
-
   "timerTitle": "Sleep Timer",
   "@timerTitle": { "description": "Screen title for timer" },
 
@@ -104,7 +117,6 @@
 
   "timerFadeOut": "Fade out audio",
   "@timerFadeOut": { "description": "Toggle label: fade audio before timer ends" },
-
   "favoritesTitle": "Favorites",
   "@favoritesTitle": { "description": "Screen title for favorites" },
 
@@ -113,7 +125,6 @@
 
   "favoritesEmptySubtitle": "Tap the heart on any sound to save it here",
   "@favoritesEmptySubtitle": { "description": "Empty state subtitle" },
-
   "settingsTitle": "Settings",
   "@settingsTitle": { "description": "Screen title for settings" },
 
@@ -137,7 +148,6 @@
 
   "settingsAutoPlay": "Auto-play on open",
   "@settingsAutoPlay": { "description": "Toggle label for auto-play preference" },
-
   "commonOk": "OK",
   "@commonOk": { "description": "Generic OK button" },
 

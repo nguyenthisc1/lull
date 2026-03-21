@@ -110,6 +110,36 @@ abstract class AppLocalizations {
   /// **'Sleep sounds for restful nights'**
   String get appTagline;
 
+  /// Splash screen app wordmark, all caps.
+  ///
+  /// In en, this message translates to:
+  /// **'LULL'**
+  String get splashWordmark;
+
+  /// Splash screen large app headline, displayed in gradient text.
+  ///
+  /// In en, this message translates to:
+  /// **'Lull'**
+  String get splashDisplayHeadline;
+
+  /// Splash screen supporting tagline under logo.
+  ///
+  /// In en, this message translates to:
+  /// **'The Science of Softness'**
+  String get splashTagline;
+
+  /// CTA button text for entering the app from splash screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get splashGetStarted;
+
+  /// Motivational text shown at the bottom of the splash screen.
+  ///
+  /// In en, this message translates to:
+  /// **'STEP INTO THE QUIET'**
+  String get splashStepIntoTheQuiet;
+
   /// Bottom nav label for Home
   ///
   /// In en, this message translates to:
@@ -163,6 +193,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rain'**
   String get homeCategoryRain;
+
+  /// Category chip: thunder sounds
+  ///
+  /// In en, this message translates to:
+  /// **'Thunder'**
+  String get homeCategoryThunder;
 
   /// Category chip: white noise
   ///
