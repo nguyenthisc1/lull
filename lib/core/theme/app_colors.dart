@@ -46,4 +46,9 @@ abstract final class AppColors {
     Color(0xFFCEB1FF),
     Color(0xFF8B9BE8),
   ];
+
+  static const List<Color> primaryGradient2 = [
+    Color.fromARGB(34, 206, 177, 255),
+    Color.fromARGB(21, 139, 155, 232),
+  ];
 }

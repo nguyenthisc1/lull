@@ -6,7 +6,7 @@ abstract final class AppTypography {
   // ── Display / Headlines — Plus Jakarta Sans ────────────────────────────────
   static TextStyle get displayLarge => GoogleFonts.plusJakartaSans(
         fontSize: 57,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w600,
         letterSpacing: -0.25,
         color: AppColors.onSurface,
         height: 1.12,
@@ -14,7 +14,7 @@ abstract final class AppTypography {
 
   static TextStyle get displayMedium => GoogleFonts.plusJakartaSans(
         fontSize: 45,
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w600,
         letterSpacing: 0,
         color: AppColors.onSurface,
         height: 1.16,
@@ -22,7 +22,7 @@ abstract final class AppTypography {
 
   static TextStyle get displaySmall => GoogleFonts.plusJakartaSans(
         fontSize: 36,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w600,
         letterSpacing: 0,
         color: AppColors.onSurface,
         height: 1.22,

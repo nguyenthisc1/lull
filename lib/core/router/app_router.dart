@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../data/datasources/onboarding_storage.dart';
-import '../../presentation/screens/home_screen.dart';
-import '../../presentation/screens/splash_screen.dart';
+import '../../repositories/onboarding_storage.dart';
+import '../../views/home/home_screen.dart';
+import '../../views/splash/splash_screen.dart';
 import 'app_routes.dart';
 
 // ── Onboarding state ─────────────────────────────────────────────────────────
