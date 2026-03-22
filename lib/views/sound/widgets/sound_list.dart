@@ -1,0 +1,205 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lull/core/constants/design_tokens.dart';
+import 'package:lull/core/theme/app_colors.dart';
+import 'package:lull/core/theme/app_typography.dart';
+import 'package:lull/models/sound_model.dart';
+import 'package:lull/providers/sound_provider.dart';
+import 'package:lull/shared/widgets/player_button.dart';
+
+class SoundList extends ConsumerWidget {
+  const SoundList({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sounds = ref.watch(filteredSoundsProvider);
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(
+        DesignTokens.spacing6,
+        DesignTokens.spacing5,
+        DesignTokens.spacing6,
+        DesignTokens.spacing3,
+      ),
+      sliver: SliverToBoxAdapter(
+        child: Column(
+          children: sounds.map<Widget>((sound) => soundItem(sound)).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget soundItem(SoundItem sound) {
+    final color = _colorForCategory(sound);
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: DesignTokens.spacing2),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(DesignTokens.radiusXl),
+        color: AppColors.primaryContainer.withValues(alpha: 0.08),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0x22000000),
+            blurRadius: 14,
+            offset: Offset(0, 6),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DesignTokens.spacing5,
+        vertical: DesignTokens.spacing5,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Icon category (left)
+          Container(
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(DesignTokens.radiusLg),
+            ),
+            padding: const EdgeInsets.all(DesignTokens.spacing4),
+            child: Icon(
+              _iconForCategory(sound),
+              size: DesignTokens.iconLg,
+              color: color,
+            ),
+          ),
+          // Sound name (centered, expanded)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: DesignTokens.spacing3,
+              ), // 14
+              child: Column(
+                children: [
+                  Text(
+                    sound.name,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.bodyLarge.copyWith(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.25,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: DesignTokens.spacing1),
+                  Text(
+                    sound.category.name,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.bodySmall.copyWith(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.25,
+                      color: AppColors.outline,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          PlayerButton(
+            isPlaying: false,
+            onTogglePlay: () {},
+            glowAlpha: 0,
+            size: DesignTokens.iconXl, // 48
+            iconSize: DesignTokens.iconMd, // 24
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              size: DesignTokens.iconLg,
+            ),
+            onPressed: () {},
+            splashRadius: DesignTokens.radiusLg, // 22
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _iconForCategory(SoundItem sound) {
+    switch (sound.iconName) {
+      // Nature
+      case 'yard':
+        return Icons.eco_rounded;
+      case 'water':
+        return Icons.water_drop_rounded;
+      case 'forest':
+        return Icons.park_rounded;
+      case 'flutter_dash':
+        return Icons.flight_rounded;
+      case 'air':
+        return Icons.air_rounded;
+      case 'water_drop':
+        return Icons.water_drop_outlined;
+      case 'nights_stay':
+        return Icons.nights_stay_rounded;
+      case 'nightlight':
+        return Icons.nightlight_rounded;
+      case 'waves':
+        return Icons.waves_rounded;
+
+      // Rain / Weather / Urban
+      case 'snowing':
+        return Icons.cloudy_snowing;
+      case 'location_city':
+        return Icons.location_city_rounded;
+      case 'thunderstorm':
+        return Icons.thunderstorm_rounded;
+      case 'apartment':
+        return Icons.apartment_rounded;
+      case 'directions_car':
+        return Icons.directions_car_rounded;
+      case 'traffic':
+        return Icons.traffic_rounded;
+      case 'grain':
+        return Icons.grain_rounded;
+      case 'roofing':
+        return Icons.roofing_rounded;
+
+      // Thunder
+      case 'bolt':
+        return Icons.bolt_rounded;
+      case 'cloudy_snowing':
+        return Icons.wb_cloudy_outlined;
+      case 'flash_on':
+        return Icons.flash_on_rounded;
+
+      // Fallbacks & additional
+      case 'unknown':
+        return Icons.music_note_rounded;
+    }
+
+    // Fallback: Use category-based enum mapping, from sound_model.dart line 3
+    switch (sound.category) {
+      case SoundCategory.nature:
+        return Icons.eco_rounded;
+      case SoundCategory.rain:
+        return Icons.water_drop_rounded;
+      case SoundCategory.thunder:
+        return Icons.flash_on_rounded;
+      case SoundCategory.whiteNoise:
+        return Icons.noise_aware_rounded;
+      case SoundCategory.urban:
+        return Icons.location_city_rounded;
+    }
+  }
+
+  Color _colorForCategory(SoundItem sound) {
+    // Use enum-based color mapping for each SoundCategory as in sound_model.dart (3)
+    switch (sound.category) {
+      case SoundCategory.nature:
+        return const Color(0xFF4CAF50); // Nature green
+      case SoundCategory.rain:
+        return const Color(0xFF2196F3); // Rain blue
+      case SoundCategory.thunder:
+        return const Color(
+          0xFF9575CD,
+        ); // Thunder purple-tint, updated for more distinction
+      case SoundCategory.whiteNoise:
+        return const Color(0xFFBDBDBD); // Softer white noise grey
+      case SoundCategory.urban:
+        return const Color(0xFF607D8B); // Urban bluish-grey
+    }
+  }
+}

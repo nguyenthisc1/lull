@@ -1,0 +1,120 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lull/core/constants/design_tokens.dart';
+import 'package:lull/core/theme/app_colors.dart';
+import 'package:lull/core/theme/app_typography.dart';
+import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/models/sound_model.dart';
+import 'package:lull/providers/sound_provider.dart';
+
+class SoundCategoryWidget extends ConsumerWidget {
+  const SoundCategoryWidget({super.key});
+
+  String _categoryLabel(SoundCategory category, AppLocalizations l10n) {
+    switch (category) {
+      case SoundCategory.nature:
+        return l10n.soundCategoryNature;
+      case SoundCategory.rain:
+        return l10n.soundCategoryRain;
+      case SoundCategory.thunder:
+        return l10n.soundCategoryThunder;
+      case SoundCategory.whiteNoise:
+        return l10n.soundCategoryWhiteNoise;
+      case SoundCategory.urban:
+        return l10n.soundCategoryUrban;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+
+    final categories = SoundCategory.values;
+
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(
+        DesignTokens.spacing6,
+        DesignTokens.spacing5,
+        DesignTokens.spacing6,
+        DesignTokens.spacing3,
+      ),
+      sliver: SliverToBoxAdapter(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(selectedCategoryProvider.notifier).state = null;
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: selectedCategory == null
+                      ? Theme.of(context).colorScheme.primary
+                      : AppColors.primaryContainer.withAlpha(
+                          (0.15 * 255).toInt(),
+                        ),
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DesignTokens.spacing6,
+                    vertical: DesignTokens.spacing5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(DesignTokens.radiusLg),
+                  ),
+                  textStyle: AppTypography.labelLarge.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                child: Text(
+                  l10n.soundCategoryAll,
+                  style: AppTypography.labelLarge,
+                ),
+              ),
+              const SizedBox(width: DesignTokens.spacing3),
+              ...categories.map((category) {
+                final isSelected = selectedCategory == category;
+                return Padding(
+                  padding: const EdgeInsets.only(right: DesignTokens.spacing3),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(selectedCategoryProvider.notifier).state =
+                          category;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : AppColors.primaryContainer.withAlpha(
+                              (0.15 * 255).toInt(),
+                            ),
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: DesignTokens.spacing6,
+                        vertical: DesignTokens.spacing5,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          DesignTokens.radiusLg,
+                        ),
+                      ),
+                      textStyle: AppTypography.labelLarge.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    child: Text(
+                      _categoryLabel(category, l10n),
+                      style: AppTypography.labelLarge,
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

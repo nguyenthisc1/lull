@@ -2,6 +2,37 @@ import 'package:equatable/equatable.dart';
 
 enum SoundCategory { nature, rain, thunder, whiteNoise, urban }
 
+enum SoundIconName {
+  // Nature
+  yard,
+  water,
+  forest,
+  flutter_dash,
+  air,
+  water_drop,
+  nights_stay,
+  nightlight,
+  waves,
+
+  // Rain / Weather / Urban
+  snowing,
+  location_city,
+  thunderstorm,
+  apartment,
+  directions_car,
+  traffic,
+  grain,
+  roofing,
+
+  // Thunder
+  bolt,
+  cloudy_snowing,
+  flash_on,
+
+  // Fallbacks & additional
+  unknown,
+}
+
 class SoundItem extends Equatable {
   final String id;
   final String name;

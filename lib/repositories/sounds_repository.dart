@@ -1,14 +1,13 @@
 import '../models/sound_model.dart';
 
-
 abstract final class SoundsRepository {
-  static const List<SoundItem> all = [
+  static final List<SoundItem> all = [
     // ── Nature ──────────────────────────────────────────────────────────────
     SoundItem(
       id: 'nature_backyard',
       name: 'Backyard Sounds',
       assetPath: 'assets/sounds/nature/Backyard-sounds.mp3',
-      iconName: 'yard',
+      iconName: SoundIconName.yard.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -16,7 +15,7 @@ abstract final class SoundsRepository {
       name: 'Gentle Stream',
       assetPath:
           'assets/sounds/nature/Gentle-stream-with-falling-sleet-soothing-nature-sound.mp3',
-      iconName: 'water',
+      iconName: SoundIconName.water.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -24,7 +23,7 @@ abstract final class SoundsRepository {
       name: 'Rain & Birdsong',
       assetPath:
           'assets/sounds/nature/Rainfall-with-bird-calls-sound-effect.mp3',
-      iconName: 'flutter_dash',
+      iconName: SoundIconName.flutter_dash.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -32,7 +31,7 @@ abstract final class SoundsRepository {
       name: 'Birds & Water',
       assetPath:
           'assets/sounds/nature/Relaxing-birds-and-flowing-water-sound-effect.mp3',
-      iconName: 'air',
+      iconName: SoundIconName.water_drop.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -40,7 +39,7 @@ abstract final class SoundsRepository {
       name: 'Rain & Stream',
       assetPath:
           'assets/sounds/nature/Relaxing-rain-and-stream-sounds-nature-sounds-for-sleep.mp3',
-      iconName: 'water_drop',
+      iconName: SoundIconName.water_drop.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -48,15 +47,14 @@ abstract final class SoundsRepository {
       name: 'Stream & Insects',
       assetPath:
           'assets/sounds/nature/Soothing-water-stream-and-calming-night-insect-sounds copy.mp3',
-      iconName: 'water',
+      iconName: SoundIconName.water.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
       id: 'nature_spring_forest',
       name: 'Spring Forest',
-      assetPath:
-          'assets/sounds/nature/Spring-forest-sounds-for-relaxation.mp3',
-      iconName: 'forest',
+      assetPath: 'assets/sounds/nature/Spring-forest-sounds-for-relaxation.mp3',
+      iconName: SoundIconName.forest.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -64,7 +62,7 @@ abstract final class SoundsRepository {
       name: 'Summer Insects',
       assetPath:
           'assets/sounds/nature/Summer-night-insects-chirping-in-yard-sound-effect.mp3',
-      iconName: 'nights_stay',
+      iconName: SoundIconName.nights_stay.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -72,7 +70,7 @@ abstract final class SoundsRepository {
       name: 'Cicadas & Crickets',
       assetPath:
           'assets/sounds/nature/Summer-night-nature-ambience-sound-effect-cicadas-and-crickets.mp3',
-      iconName: 'nightlight',
+      iconName: SoundIconName.nightlight.name,
       category: SoundCategory.nature,
     ),
     SoundItem(
@@ -80,7 +78,7 @@ abstract final class SoundsRepository {
       name: 'Waterfall & Birds',
       assetPath:
           'assets/sounds/nature/Waterfall-and-birdsong-ambience-nature-white-noise-sound-effect.mp3',
-      iconName: 'waves',
+      iconName: SoundIconName.waves.name,
       category: SoundCategory.nature,
     ),
 
@@ -89,14 +87,14 @@ abstract final class SoundsRepository {
       id: 'rain_hail_window',
       name: 'Hail on Window',
       assetPath: 'assets/sounds/rain/Hail-hitting-a-window-sound-effect.mp3',
-      iconName: 'snowing',
+      iconName: SoundIconName.snowing.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
       id: 'rain_heavy',
       name: 'Heavy Rainfall',
       assetPath: 'assets/sounds/rain/Heavy-rainfall-sound-effect.mp3',
-      iconName: 'water_drop',
+      iconName: SoundIconName.water_drop.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -104,7 +102,7 @@ abstract final class SoundsRepository {
       name: 'City Storm Rain',
       assetPath:
           'assets/sounds/rain/Heavy-storm-rain-in-city-street-ambience-sound-effect.mp3',
-      iconName: 'location_city',
+      iconName: SoundIconName.location_city.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -112,7 +110,7 @@ abstract final class SoundsRepository {
       name: 'Rain & Thunder',
       assetPath:
           'assets/sounds/rain/Rain-and-thunder-sound-effect-realistic-rainy-weather-ambience.mp3',
-      iconName: 'thunderstorm',
+      iconName: SoundIconName.thunderstorm.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -120,7 +118,7 @@ abstract final class SoundsRepository {
       name: 'City Rain',
       assetPath:
           'assets/sounds/rain/Rain-falling-in-city-urban-ambience-sound-effect.mp3',
-      iconName: 'location_city',
+      iconName: SoundIconName.location_city.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -128,7 +126,7 @@ abstract final class SoundsRepository {
       name: 'Urban Rain',
       assetPath:
           'assets/sounds/rain/Rain-falling-in-urban-area-city-ambience-sound-effect.mp3',
-      iconName: 'apartment',
+      iconName: SoundIconName.apartment.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -136,7 +134,7 @@ abstract final class SoundsRepository {
       name: 'Raindrops on Car',
       assetPath:
           'assets/sounds/rain/Raindrops-on-the-car-window-sound-effect.mp3',
-      iconName: 'directions_car',
+      iconName: SoundIconName.directions_car.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -144,14 +142,14 @@ abstract final class SoundsRepository {
       name: 'Rainy Traffic',
       assetPath:
           'assets/sounds/rain/Rainy-city-traffic-sound-cars-driving-on-wet-pavement.mp3',
-      iconName: 'traffic',
+      iconName: SoundIconName.traffic.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
       id: 'rain_sleet',
       name: 'Falling Sleet',
       assetPath: 'assets/sounds/rain/Sleet-falling-sound-effect.mp3',
-      iconName: 'grain',
+      iconName: SoundIconName.grain.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
@@ -159,14 +157,14 @@ abstract final class SoundsRepository {
       name: 'Torrential Rain',
       assetPath:
           'assets/sounds/rain/Torrential-rain-hitting-roof-sound-effect.mp3',
-      iconName: 'roofing',
+      iconName: SoundIconName.roofing.name,
       category: SoundCategory.rain,
     ),
     SoundItem(
       id: 'rain_wind',
       name: 'Wind & Rain',
       assetPath: 'assets/sounds/rain/Wind-and-rain-sounds.mp3',
-      iconName: 'air',
+      iconName: SoundIconName.air.name,
       category: SoundCategory.rain,
     ),
 
@@ -176,15 +174,14 @@ abstract final class SoundsRepository {
       name: 'Deep Thunder Strike',
       assetPath:
           'assets/sounds/thunder/Deep-thunder-strike-city-rain-ambience.mp3',
-      iconName: 'bolt',
+      iconName: SoundIconName.bolt.name,
       category: SoundCategory.thunder,
     ),
     SoundItem(
       id: 'thunder_distant_storm',
       name: 'Distant Storm',
-      assetPath:
-          'assets/sounds/thunder/Distant-storm-thunder-sound-effect.mp3',
-      iconName: 'cloudy_snowing',
+      assetPath: 'assets/sounds/thunder/Distant-storm-thunder-sound-effect.mp3',
+      iconName: SoundIconName.cloudy_snowing.name,
       category: SoundCategory.thunder,
     ),
     SoundItem(
@@ -192,14 +189,14 @@ abstract final class SoundsRepository {
       name: 'Lightning Strike',
       assetPath:
           'assets/sounds/thunder/Lightning-strike-and-thunder-sound-effect.mp3',
-      iconName: 'flash_on',
+      iconName: SoundIconName.flash_on.name,
       category: SoundCategory.thunder,
     ),
     SoundItem(
       id: 'thunder_clap',
       name: 'Thunder Clap',
       assetPath: 'assets/sounds/thunder/Thunder-clap-sound-effect-no-rain.mp3',
-      iconName: 'thunderstorm',
+      iconName: SoundIconName.thunderstorm.name,
       category: SoundCategory.thunder,
     ),
     SoundItem(
@@ -207,7 +204,7 @@ abstract final class SoundsRepository {
       name: 'City Thunder Rumble',
       assetPath:
           'assets/sounds/thunder/Thunder-rumble-in-rainy-city-ambience-sound-effect.mp3',
-      iconName: 'bolt',
+      iconName: SoundIconName.bolt.name,
       category: SoundCategory.thunder,
     ),
   ];
