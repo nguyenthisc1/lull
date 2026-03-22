@@ -5,6 +5,9 @@ abstract final class AppRoutes {
   // ── Onboarding ────────────────────────────────────────────────────────────
   static const splash = '/splash';
 
-  // ── Main ──────────────────────────────────────────────────────────────────
-  static const home = '/home';
+  // ── Main shell tabs ───────────────────────────────────────────────────────
+  static const discover = '/home';
+  static const player = '/player';
+  static const library = '/library';
+  static const settings = '/settings';
 }

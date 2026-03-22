@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../repositories/onboarding_storage.dart';
+import '../../shared/widgets/app_shell.dart';
 import '../../views/home/home_screen.dart';
+import '../../views/library/library_screen.dart';
+import '../../views/player/player_screen.dart';
+import '../../views/settings/settings_screen.dart';
 import '../../views/splash/splash_screen.dart';
 import 'app_routes.dart';
 
@@ -26,45 +30,89 @@ final routerProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: false,
     initialLocation: AppRoutes.root,
 
-    // Redirect / → splash or home based on onboarding state.
+    // Redirect / → splash or discover based on onboarding state.
     redirect: (BuildContext context, GoRouterState state) {
       if (state.matchedLocation != AppRoutes.root) return null;
 
       return hasSeenSplashAsync.when(
-        data: (seen) => seen ? AppRoutes.home : AppRoutes.splash,
+        data: (seen) => seen ? AppRoutes.discover : AppRoutes.splash,
         // Show splash while loading (resolves in <1 frame from disk cache).
         loading: () => AppRoutes.splash,
-        error: (_, _) => AppRoutes.home,
+        error: (_, _) => AppRoutes.discover,
       );
     },
 
     routes: [
-      GoRoute(
-        path: AppRoutes.root,
-        // Never rendered — redirect always fires before this builder.
-        builder: (_, _) => const SizedBox.shrink(),
-      ),
+      // ── Root placeholder ─────────────────────────────────────────────────
+      GoRoute(path: AppRoutes.root, builder: (_, _) => const SizedBox.shrink()),
+
+      // ── Onboarding ───────────────────────────────────────────────────────
       GoRoute(
         path: AppRoutes.splash,
         name: 'splash',
-        builder: (_, _) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: AppRoutes.home,
-        name: 'home',
-        builder: (_, _) => const HomeScreen(),
         pageBuilder: (_, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const HomeScreen(),
+          child: const SplashScreen(),
           transitionsBuilder: (_, animation, _, child) => FadeTransition(
             opacity: CurvedAnimation(
               parent: animation,
-              curve: Curves.easeInOutCubic,
+              curve: Curves.easeInOut,
             ),
             child: child,
           ),
-          transitionDuration: const Duration(milliseconds: 600),
+          transitionDuration: const Duration(milliseconds: 400),
         ),
+      ),
+
+      // ── Main shell (Discover · Player · Library · Settings) ───────────────
+      StatefulShellRoute.indexedStack(
+        builder: (_, _, navigationShell) =>
+            AppShell(navigationShell: navigationShell),
+        branches: [
+          // Tab 0 – Discover
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.discover,
+                name: 'discover',
+                builder: (_, _) => const HomeScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 1 – Player
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.player,
+                name: 'player',
+                builder: (_, _) => const PlayerScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 2 – Library
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.library,
+                name: 'library',
+                builder: (_, _) => const LibraryScreen(),
+              ),
+            ],
+          ),
+
+          // Tab 3 – Settings
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.settings,
+                name: 'settings',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );
