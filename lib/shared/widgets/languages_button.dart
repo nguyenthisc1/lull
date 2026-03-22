@@ -1,25 +1,34 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
+import 'package:lull/providers/locale_provider.dart';
 
-class LanguageButton extends StatelessWidget {
-  const LanguageButton({super.key, required this.locale, required this.onTap});
+class LanguageButton extends ConsumerStatefulWidget {
+  const LanguageButton({super.key});
 
-  final Locale locale;
-  final VoidCallback onTap;
-
-  static const Map<String, String> _langs = {'en': 'English', 'vi': 'Tiếng Việt'};
+  static const Map<String, String> _langs = {
+    'en': 'English',
+    'vi': 'Tiếng Việt',
+  };
 
   @override
+  ConsumerState<LanguageButton> createState() => _LanguageButtonState();
+}
+
+class _LanguageButtonState extends ConsumerState<LanguageButton> {
+  @override
   Widget build(BuildContext context) {
+    final locale = ref.watch(localeProvider);
     final String code =
-        _langs[locale.languageCode] ?? locale.languageCode.toUpperCase();
+        LanguageButton._langs[locale.languageCode] ??
+        locale.languageCode.toUpperCase();
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => ref.read(localeProvider.notifier).toggleLocale(),
       child: AnimatedSwitcher(
         duration: DesignTokens.durationFast,
         transitionBuilder: (child, anim) =>
