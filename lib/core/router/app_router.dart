@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lull/views/sound/sound_screen.dart';
 
 import '../../repositories/onboarding_storage.dart';
 import '../../shared/widgets/app_shell.dart';
@@ -91,7 +92,17 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
 
-          // Tab 2 – Library
+          // Tab 3 – Sound
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.sound,
+                name: 'Sound',
+                builder: (_, _) => const SoundScreen(),
+              ),
+            ],
+          ),
+
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -102,7 +113,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
 
-          // Tab 3 – Settings
+          // Tab 4 – Settings
           StatefulShellBranch(
             routes: [
               GoRoute(

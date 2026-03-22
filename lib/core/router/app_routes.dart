@@ -10,4 +10,5 @@ abstract final class AppRoutes {
   static const player = '/player';
   static const library = '/library';
   static const settings = '/settings';
+  static const sound = '/sound';
 }

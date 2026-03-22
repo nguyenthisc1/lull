@@ -31,11 +31,18 @@ class AppShell extends StatelessWidget {
         label: l10n.navPlayer,
       ),
       TabItem(
+        path: AppRoutes.sound,
+        icon: Icons.music_note_outlined,
+        activeIcon: Icons.music_note,
+        label: l10n.navSound,
+      ),
+      TabItem(
         path: AppRoutes.library,
         icon: Icons.library_music_outlined,
         activeIcon: Icons.library_music_rounded,
         label: l10n.navLibrary,
       ),
+
       TabItem(
         path: AppRoutes.settings,
         icon: Icons.settings_outlined,
