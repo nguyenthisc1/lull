@@ -12,7 +12,6 @@ import '../../core/constants/design_tokens.dart';
 import '../../core/router/app_routes.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
-import '../../providers/locale_provider.dart';
 import '../../repositories/onboarding_storage.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -73,7 +72,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     );
 
     _enterController.forward();
-
   }
 
   @override
@@ -87,7 +85,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _onGetStarted() async {
     await OnboardingStorage.markSplashSeen();
     if (!mounted) return;
-    context.go(AppRoutes.home);
+    context.go(AppRoutes.discover);
   }
 
   @override
@@ -320,11 +318,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: DesignTokens.spacing4),
-                    child: LanguageButton(
-                      locale: ref.watch(localeProvider),
-                      onTap: () => ref.read(localeProvider.notifier).toggleLocale(),
+                    padding: const EdgeInsets.only(
+                      bottom: DesignTokens.spacing4,
                     ),
+                    child: LanguageButton(),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
