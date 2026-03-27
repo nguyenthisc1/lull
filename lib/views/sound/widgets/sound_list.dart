@@ -4,7 +4,10 @@ import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
 import 'package:lull/models/sound_model.dart';
+import 'package:lull/providers/audio/audio_provider.dart';
+import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/providers/sound_provider.dart';
+import 'package:lull/shared/utils/utils.dart';
 import 'package:lull/shared/widgets/player_button.dart';
 
 class SoundList extends ConsumerWidget {
@@ -12,24 +15,53 @@ class SoundList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sounds = ref.watch(filteredSoundsProvider);
-    return SliverPadding(
-      padding: const EdgeInsets.fromLTRB(
-        DesignTokens.spacing6,
-        DesignTokens.spacing5,
-        DesignTokens.spacing6,
-        DesignTokens.spacing3,
-      ),
-      sliver: SliverToBoxAdapter(
-        child: Column(
-          children: sounds.map<Widget>((sound) => soundItem(sound)).toList(),
+    final soundState = ref.watch(soundProvider);
+
+    if (soundState is SoundLoading || soundState is SoundInitial) {
+      return const SliverToBoxAdapter(
+        child: Center(child: CircularProgressIndicator()),
+      );
+    } else if (soundState is SoundError) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(DesignTokens.spacing3),
+          child: Text('Error loading sounds: ${soundState.errorMessage}'),
         ),
-      ),
-    );
+      );
+    } else if (soundState is SoundLoaded) {
+      final soundList = soundState.sounds;
+      return SliverPadding(
+        padding: const EdgeInsets.fromLTRB(
+          DesignTokens.spacing6,
+          DesignTokens.spacing5,
+          DesignTokens.spacing6,
+          DesignTokens.spacing3,
+        ),
+        sliver: SliverToBoxAdapter(
+          child: Column(
+            children: soundList
+                .map<Widget>((sound) => soundItem(sound, ref))
+                .toList(),
+          ),
+        ),
+      );
+    } else {
+      // fallback if needed
+      return const SliverToBoxAdapter(child: SizedBox.shrink());
+    }
   }
 
-  Widget soundItem(SoundItem sound) {
-    final color = _colorForCategory(sound);
+  Widget soundItem(SoundItem sound, WidgetRef ref) {
+    final color = colorForCategory(sound);
+    final audioNotifier = ref.read(audioProvider.notifier);
+    final isPlaying = ref.watch(
+      audioProvider.select(
+        (s) =>
+            s.singleSound?.sound.id == sound.id &&
+            s.singleSound?.playbackState == PlaybackState.playing,
+      ),
+    );
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: DesignTokens.spacing2),
       decoration: BoxDecoration(
@@ -58,7 +90,7 @@ class SoundList extends ConsumerWidget {
             ),
             padding: const EdgeInsets.all(DesignTokens.spacing4),
             child: Icon(
-              _iconForCategory(sound),
+              iconForCategory(sound),
               size: DesignTokens.iconLg,
               color: color,
             ),
@@ -98,12 +130,14 @@ class SoundList extends ConsumerWidget {
             ),
           ),
           PlayerButton(
-            isPlaying: false,
-            onTogglePlay: () {},
+            isPlaying: isPlaying,
+            onTogglePlay: () =>
+                audioNotifier.toggleSound(sound, AudioMode.single),
             glowAlpha: 0,
             size: DesignTokens.iconXl, // 48
             iconSize: DesignTokens.iconMd, // 24
           ),
+          const SizedBox(width: DesignTokens.spacing1),
           IconButton(
             icon: const Icon(
               Icons.more_vert_rounded,
@@ -115,91 +149,5 @@ class SoundList extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  IconData _iconForCategory(SoundItem sound) {
-    switch (sound.iconName) {
-      // Nature
-      case 'yard':
-        return Icons.eco_rounded;
-      case 'water':
-        return Icons.water_drop_rounded;
-      case 'forest':
-        return Icons.park_rounded;
-      case 'flutter_dash':
-        return Icons.flight_rounded;
-      case 'air':
-        return Icons.air_rounded;
-      case 'water_drop':
-        return Icons.water_drop_outlined;
-      case 'nights_stay':
-        return Icons.nights_stay_rounded;
-      case 'nightlight':
-        return Icons.nightlight_rounded;
-      case 'waves':
-        return Icons.waves_rounded;
-
-      // Rain / Weather / Urban
-      case 'snowing':
-        return Icons.cloudy_snowing;
-      case 'location_city':
-        return Icons.location_city_rounded;
-      case 'thunderstorm':
-        return Icons.thunderstorm_rounded;
-      case 'apartment':
-        return Icons.apartment_rounded;
-      case 'directions_car':
-        return Icons.directions_car_rounded;
-      case 'traffic':
-        return Icons.traffic_rounded;
-      case 'grain':
-        return Icons.grain_rounded;
-      case 'roofing':
-        return Icons.roofing_rounded;
-
-      // Thunder
-      case 'bolt':
-        return Icons.bolt_rounded;
-      case 'cloudy_snowing':
-        return Icons.wb_cloudy_outlined;
-      case 'flash_on':
-        return Icons.flash_on_rounded;
-
-      // Fallbacks & additional
-      case 'unknown':
-        return Icons.music_note_rounded;
-    }
-
-    // Fallback: Use category-based enum mapping, from sound_model.dart line 3
-    switch (sound.category) {
-      case SoundCategory.nature:
-        return Icons.eco_rounded;
-      case SoundCategory.rain:
-        return Icons.water_drop_rounded;
-      case SoundCategory.thunder:
-        return Icons.flash_on_rounded;
-      case SoundCategory.whiteNoise:
-        return Icons.noise_aware_rounded;
-      case SoundCategory.urban:
-        return Icons.location_city_rounded;
-    }
-  }
-
-  Color _colorForCategory(SoundItem sound) {
-    // Use enum-based color mapping for each SoundCategory as in sound_model.dart (3)
-    switch (sound.category) {
-      case SoundCategory.nature:
-        return const Color(0xFF4CAF50); // Nature green
-      case SoundCategory.rain:
-        return const Color(0xFF2196F3); // Rain blue
-      case SoundCategory.thunder:
-        return const Color(
-          0xFF9575CD,
-        ); // Thunder purple-tint, updated for more distinction
-      case SoundCategory.whiteNoise:
-        return const Color(0xFFBDBDBD); // Softer white noise grey
-      case SoundCategory.urban:
-        return const Color(0xFF607D8B); // Urban bluish-grey
-    }
   }
 }

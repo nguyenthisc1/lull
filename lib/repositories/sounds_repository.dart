@@ -1,7 +1,12 @@
 import '../models/sound_model.dart';
 
-abstract final class SoundsRepository {
-  static final List<SoundItem> all = [
+abstract interface class SoundsRepository {
+  Future<List<SoundItem>> getAllSounds();
+  Future<List<SoundItem>> getByCategory(SoundCategory category);
+}
+
+class LocalSoundsRepository implements SoundsRepository {
+  final List<SoundItem> _sounds = [
     // ── Nature ──────────────────────────────────────────────────────────────
     SoundItem(
       id: 'nature_backyard',
@@ -209,7 +214,14 @@ abstract final class SoundsRepository {
     ),
   ];
 
-  /// Sounds filtered by category.
-  static List<SoundItem> byCategory(SoundCategory category) =>
-      all.where((s) => s.category == category).toList();
+  @override
+  Future<List<SoundItem>> getAllSounds() async {
+    return _sounds;
+  }
+
+  @override
+  Future<List<SoundItem>> getByCategory(SoundCategory category) async {
+    return _sounds.where((s) => s.category == category).toList();
+  }
+
 }
