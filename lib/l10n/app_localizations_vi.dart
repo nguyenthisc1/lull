@@ -18,6 +18,31 @@ class AppLocalizationsVi extends AppLocalizations {
   String get splashWordmark => 'LULL';
 
   @override
+  String get soundCategoryAll => 'Tất cả âm thanh';
+
+  @override
+  String get soundCategoryNature => 'Thiên nhiên';
+
+  @override
+  String get soundCategoryRain => 'Mưa';
+
+  @override
+  String get soundCategoryThunder => 'Sấm sét';
+
+  @override
+  String get soundCategoryWhiteNoise => 'Âm trắng';
+
+  @override
+  String get soundCategoryUrban => 'Thành phố';
+
+  @override
+  String get soundLibraryTitle => 'Thư viện âm thanh';
+
+  @override
+  String get soundLibrarySubtitle =>
+      'Phối hợp các âm thiên nhiên để tìm sự bình yên của bạn';
+
+  @override
   String get splashDisplayHeadline => 'Lull';
 
   @override
@@ -30,6 +55,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get splashStepIntoTheQuiet => 'BƯỚC VÀO YÊN LẶNG';
 
   @override
+  String get navDiscover => 'Khám phá';
+
+  @override
+  String get navPlayer => 'Phát nhạc';
+
+  @override
+  String get navLibrary => 'Thư viện';
+
+  @override
+  String get navSound => 'Âm thanh';
+
+  @override
+  String get navSettings => 'Cài đặt';
+
+  @override
   String get navHome => 'Trang chủ';
 
   @override
@@ -37,9 +77,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get navTimer => 'Hẹn giờ';
-
-  @override
-  String get navSettings => 'Cài đặt';
 
   @override
   String get homeGreetingNight => 'Chúc ngủ ngon';

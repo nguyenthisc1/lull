@@ -116,6 +116,54 @@ abstract class AppLocalizations {
   /// **'LULL'**
   String get splashWordmark;
 
+  /// Label for showing all sound categories
+  ///
+  /// In en, this message translates to:
+  /// **'All Sounds'**
+  String get soundCategoryAll;
+
+  /// Label for Nature sound category
+  ///
+  /// In en, this message translates to:
+  /// **'Nature'**
+  String get soundCategoryNature;
+
+  /// Label for Rain sound category
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get soundCategoryRain;
+
+  /// Label for Thunder sound category
+  ///
+  /// In en, this message translates to:
+  /// **'Thunder'**
+  String get soundCategoryThunder;
+
+  /// Label for White Noise sound category
+  ///
+  /// In en, this message translates to:
+  /// **'White Noise'**
+  String get soundCategoryWhiteNoise;
+
+  /// Label for Urban sound category
+  ///
+  /// In en, this message translates to:
+  /// **'Urban'**
+  String get soundCategoryUrban;
+
+  /// Header/title for the sound library screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sound Library'**
+  String get soundLibraryTitle;
+
+  /// Subtitle for the sound library screen describing its purpose
+  ///
+  /// In en, this message translates to:
+  /// **'Mix and match nature sounds to find your calm'**
+  String get soundLibrarySubtitle;
+
   /// Splash screen large app headline, displayed in gradient text.
   ///
   /// In en, this message translates to:
@@ -140,7 +188,37 @@ abstract class AppLocalizations {
   /// **'STEP INTO THE QUIET'**
   String get splashStepIntoTheQuiet;
 
-  /// Bottom nav label for Home
+  /// Bottom nav label for Discover / Home tab
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get navDiscover;
+
+  /// Bottom nav label for Player tab
+  ///
+  /// In en, this message translates to:
+  /// **'Player'**
+  String get navPlayer;
+
+  /// Bottom nav label for Library tab
+  ///
+  /// In en, this message translates to:
+  /// **'Library'**
+  String get navLibrary;
+
+  /// Bottom nav label for Sound tab
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get navSound;
+
+  /// Bottom nav label for Settings tab
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get navSettings;
+
+  /// Bottom nav label for Home (legacy)
   ///
   /// In en, this message translates to:
   /// **'Home'**
@@ -157,12 +235,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Timer'**
   String get navTimer;
-
-  /// Bottom nav label for Settings
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get navSettings;
 
   /// Evening greeting on home screen
   ///

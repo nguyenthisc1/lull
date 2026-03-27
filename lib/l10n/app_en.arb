@@ -9,6 +9,30 @@
   "splashWordmark": "LULL",
   "@splashWordmark": { "description": "Splash screen app wordmark, all caps." },
 
+  "soundCategoryAll": "All Sounds",
+  "@soundCategoryAll": { "description": "Label for showing all sound categories" },
+
+  "soundCategoryNature": "Nature",
+  "@soundCategoryNature": { "description": "Label for Nature sound category" },
+
+  "soundCategoryRain": "Rain",
+  "@soundCategoryRain": { "description": "Label for Rain sound category" },
+
+  "soundCategoryThunder": "Thunder",
+  "@soundCategoryThunder": { "description": "Label for Thunder sound category" },
+
+  "soundCategoryWhiteNoise": "White Noise",
+  "@soundCategoryWhiteNoise": { "description": "Label for White Noise sound category" },
+
+  "soundCategoryUrban": "Urban",
+  "@soundCategoryUrban": { "description": "Label for Urban sound category" },
+
+  "soundLibraryTitle": "Sound Library",
+  "@soundLibraryTitle": { "description": "Header/title for the sound library screen" },
+
+  "soundLibrarySubtitle": "Mix and match nature sounds to find your calm",
+  "@soundLibrarySubtitle": { "description": "Subtitle for the sound library screen describing its purpose" },
+
   "splashDisplayHeadline": "Lull",
   "@splashDisplayHeadline": { "description": "Splash screen large app headline, displayed in gradient text." },
 
@@ -16,21 +40,34 @@
   "@splashTagline": { "description": "Splash screen supporting tagline under logo." },
 
   "splashGetStarted": "Get Started",
+  
   "@splashGetStarted": { "description": "CTA button text for entering the app from splash screen." },
 
   "splashStepIntoTheQuiet": "STEP INTO THE QUIET",
   "@splashStepIntoTheQuiet": { "description": "Motivational text shown at the bottom of the splash screen." },
+  "navDiscover": "Discover",
+  "@navDiscover": { "description": "Bottom nav label for Discover / Home tab" },
+
+  "navPlayer": "Player",
+  "@navPlayer": { "description": "Bottom nav label for Player tab" },
+
+  "navLibrary": "Library",
+  "@navLibrary": { "description": "Bottom nav label for Library tab" },
+
+  "navSound": "Sound",
+  "@navSound": { "description": "Bottom nav label for Sound tab" },
+
+  "navSettings": "Settings",
+  "@navSettings": { "description": "Bottom nav label for Settings tab" },
+
   "navHome": "Home",
-  "@navHome": { "description": "Bottom nav label for Home" },
+  "@navHome": { "description": "Bottom nav label for Home (legacy)" },
 
   "navFavorites": "Favorites",
   "@navFavorites": { "description": "Bottom nav label for Favorites" },
 
   "navTimer": "Timer",
   "@navTimer": { "description": "Bottom nav label for Sleep Timer" },
-
-  "navSettings": "Settings",
-  "@navSettings": { "description": "Bottom nav label for Settings" },
   "homeGreetingNight": "Good night",
   "@homeGreetingNight": { "description": "Evening greeting on home screen" },
 

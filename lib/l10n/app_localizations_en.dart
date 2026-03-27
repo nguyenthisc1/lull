@@ -18,6 +18,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splashWordmark => 'LULL';
 
   @override
+  String get soundCategoryAll => 'All Sounds';
+
+  @override
+  String get soundCategoryNature => 'Nature';
+
+  @override
+  String get soundCategoryRain => 'Rain';
+
+  @override
+  String get soundCategoryThunder => 'Thunder';
+
+  @override
+  String get soundCategoryWhiteNoise => 'White Noise';
+
+  @override
+  String get soundCategoryUrban => 'Urban';
+
+  @override
+  String get soundLibraryTitle => 'Sound Library';
+
+  @override
+  String get soundLibrarySubtitle =>
+      'Mix and match nature sounds to find your calm';
+
+  @override
   String get splashDisplayHeadline => 'Lull';
 
   @override
@@ -30,6 +55,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splashStepIntoTheQuiet => 'STEP INTO THE QUIET';
 
   @override
+  String get navDiscover => 'Discover';
+
+  @override
+  String get navPlayer => 'Player';
+
+  @override
+  String get navLibrary => 'Library';
+
+  @override
+  String get navSound => 'Sound';
+
+  @override
+  String get navSettings => 'Settings';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -37,9 +77,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navTimer => 'Timer';
-
-  @override
-  String get navSettings => 'Settings';
 
   @override
   String get homeGreetingNight => 'Good night';

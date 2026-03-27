@@ -7,6 +7,30 @@
   "appTagline": "Âm thanh ru ngủ cho những đêm ngon giấc",
   "@appTagline": { "description": "Tagline của ứng dụng, hiển thị trên màn hình splash/onboarding" },
 
+  "soundCategoryAll": "Tất cả âm thanh",
+  "@soundCategoryAll": { "description": "Nhãn hiển thị tất cả các loại âm thanh" },
+
+  "soundCategoryNature": "Thiên nhiên",
+  "@soundCategoryNature": { "description": "Nhãn cho loại âm thanh Thiên nhiên" },
+
+  "soundCategoryRain": "Mưa",
+  "@soundCategoryRain": { "description": "Nhãn cho loại âm thanh Mưa" },
+
+  "soundCategoryThunder": "Sấm sét",
+  "@soundCategoryThunder": { "description": "Nhãn cho loại âm thanh Sấm sét" },
+
+  "soundCategoryWhiteNoise": "Âm trắng",
+  "@soundCategoryWhiteNoise": { "description": "Nhãn cho loại âm thanh Âm trắng" },
+
+  "soundCategoryUrban": "Thành phố",
+  "@soundCategoryUrban": { "description": "Nhãn cho loại âm thanh Thành phố" },
+
+  "soundLibraryTitle": "Thư viện âm thanh",
+  "@soundLibraryTitle": { "description": "Tiêu đề/đầu mục cho màn hình thư viện âm thanh" },
+
+  "soundLibrarySubtitle": "Phối hợp các âm thiên nhiên để tìm sự bình yên của bạn",
+  "@soundLibrarySubtitle": { "description": "Phụ đề cho màn hình thư viện âm thanh mô tả mục đích của nó" },
+
   "splashWordmark": "LULL",
   "@splashWordmark": { "description": "Dấu ấn thương hiệu ứng dụng trên màn hình khởi động, chữ in hoa toàn bộ." },
 
@@ -22,17 +46,30 @@
   "splashStepIntoTheQuiet": "BƯỚC VÀO YÊN LẶNG",
   "@splashStepIntoTheQuiet": { "description": "Chữ động lực hiển thị dưới cùng màn hình splash." },
 
+  "navDiscover": "Khám phá",
+  "@navDiscover": { "description": "Nhãn thanh điều hướng: tab Khám phá / Trang chủ" },
+
+  "navPlayer": "Phát nhạc",
+  "@navPlayer": { "description": "Nhãn thanh điều hướng: tab Phát nhạc" },
+
+  "navLibrary": "Thư viện",
+  "@navLibrary": { "description": "Nhãn thanh điều hướng: tab Thư viện" },
+
+  "navSound": "Âm thanh",
+  "@navSound": { "description": "Nhãn thanh điều hướng: tab Âm thanh" },
+
+
+  "navSettings": "Cài đặt",
+  "@navSettings": { "description": "Nhãn thanh điều hướng: Cài đặt" },
+
   "navHome": "Trang chủ",
-  "@navHome": { "description": "Nhãn thanh điều hướng: Trang chủ" },
+  "@navHome": { "description": "Nhãn thanh điều hướng: Trang chủ (cũ)" },
 
   "navFavorites": "Yêu thích",
   "@navFavorites": { "description": "Nhãn thanh điều hướng: Yêu thích" },
 
   "navTimer": "Hẹn giờ",
   "@navTimer": { "description": "Nhãn thanh điều hướng: Hẹn giờ ngủ" },
-
-  "navSettings": "Cài đặt",
-  "@navSettings": { "description": "Nhãn thanh điều hướng: Cài đặt" },
 
   "homeGreetingNight": "Chúc ngủ ngon",
   "@homeGreetingNight": { "description": "Chào buổi tối trên màn hình chính" },
