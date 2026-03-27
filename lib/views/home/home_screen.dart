@@ -48,6 +48,10 @@ class HomeScreen extends ConsumerWidget {
               ),
             ],
           ),
+
+        const SliverToBoxAdapter(
+            child: SizedBox(height: DesignTokens.navHeightSpacing),
+          ),
         ],
       ),
     );
@@ -290,7 +294,6 @@ class _CategoryCard extends StatelessWidget {
   }
 }
 
-// ── Greeting header ──────────────────────────────────────────────────────────
 class _GreetingHeader extends StatelessWidget {
   const _GreetingHeader();
 
