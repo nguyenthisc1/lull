@@ -28,10 +28,15 @@ class SoundCategoryWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-
     final categories = SoundCategory.values;
 
-    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final soundState = ref.watch(soundProvider);
+    SoundCategory? selectedCategory;
+    if (soundState is SoundLoaded) {
+      selectedCategory = soundState.selectedCategory;
+    } else {
+      selectedCategory = null;
+    }
 
     return SliverPadding(
       padding: const EdgeInsets.fromLTRB(
@@ -47,7 +52,7 @@ class SoundCategoryWidget extends ConsumerWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  ref.read(selectedCategoryProvider.notifier).state = null;
+                  ref.read(soundProvider.notifier).loadByCategory(null);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: selectedCategory == null
@@ -80,8 +85,8 @@ class SoundCategoryWidget extends ConsumerWidget {
                   padding: const EdgeInsets.only(right: DesignTokens.spacing3),
                   child: ElevatedButton(
                     onPressed: () {
-                      ref.read(selectedCategoryProvider.notifier).state =
-                          category;
+                      // Set the category: delegate to provider's loadByCategory
+                      ref.read(soundProvider.notifier).loadByCategory(category);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isSelected
