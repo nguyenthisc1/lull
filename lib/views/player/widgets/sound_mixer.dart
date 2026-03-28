@@ -14,7 +14,6 @@ class SoundMixer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final soundsList = ref.watch(audioProvider.select((s) => s.sounds));
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,8 +41,9 @@ class SoundMixer extends ConsumerWidget {
                     sound: soundItemState.sound,
                     volume: soundItemState.volume,
                     onChanged: (v) {
-                      // Find the provider logic to change volume
-                      // ref.read(audioProvider.notifier).setVolume(sound.id, v);
+                      ref
+                          .read(audioProvider.notifier)
+                          .setVolume(soundItemState, v);
                     },
                   ),
                   if (i < soundsList.length - 1)
