@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lull/l10n/app_localizations.dart';
 import 'package:lull/models/sound_model.dart';
 
 IconData iconForCategory(SoundItem sound) {
@@ -84,5 +85,20 @@ Color colorForCategory(SoundItem sound) {
       return const Color(0xFFBDBDBD); // Softer white noise grey
     case SoundCategory.urban:
       return const Color(0xFF607D8B); // Urban bluish-grey
+  }
+}
+
+String categoryLabel(SoundCategory category, AppLocalizations l10n) {
+  switch (category) {
+    case SoundCategory.nature:
+      return l10n.soundCategoryNature;
+    case SoundCategory.rain:
+      return l10n.soundCategoryRain;
+    case SoundCategory.thunder:
+      return l10n.soundCategoryThunder;
+    case SoundCategory.whiteNoise:
+      return l10n.soundCategoryWhiteNoise;
+    case SoundCategory.urban:
+      return l10n.soundCategoryUrban;
   }
 }

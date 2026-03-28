@@ -49,7 +49,9 @@ class _PlayerTitleState extends ConsumerState<PlayerTitle>
     );
 
     final currentSound = ref.watch(
-      audioProvider.select((s) => s.currentSingle),
+      audioProvider.select(
+        (s) => s.currentSingle ?? (s.sounds.isNotEmpty ? s.sounds[0] : null),
+      ),
     );
 
     // Animation: rotate full 360 deg (2 * pi), repeat when isPlaying, stop (no anim) when false.

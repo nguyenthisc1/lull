@@ -35,7 +35,6 @@ class PlayerControls extends StatelessWidget {
         AnimatedBuilder(
           animation: pulseController,
           builder: (_, __) {
-            
             return PlayerButton(
               isPlaying: isPlaying,
               onTogglePlay: onTogglePlay,

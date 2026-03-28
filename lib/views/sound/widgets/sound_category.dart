@@ -6,24 +6,10 @@ import 'package:lull/core/theme/app_typography.dart';
 import 'package:lull/l10n/app_localizations.dart';
 import 'package:lull/models/sound_model.dart';
 import 'package:lull/providers/sound_provider.dart';
+import 'package:lull/shared/utils/utils.dart';
 
 class SoundCategoryWidget extends ConsumerWidget {
   const SoundCategoryWidget({super.key});
-
-  String _categoryLabel(SoundCategory category, AppLocalizations l10n) {
-    switch (category) {
-      case SoundCategory.nature:
-        return l10n.soundCategoryNature;
-      case SoundCategory.rain:
-        return l10n.soundCategoryRain;
-      case SoundCategory.thunder:
-        return l10n.soundCategoryThunder;
-      case SoundCategory.whiteNoise:
-        return l10n.soundCategoryWhiteNoise;
-      case SoundCategory.urban:
-        return l10n.soundCategoryUrban;
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -110,7 +96,7 @@ class SoundCategoryWidget extends ConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      _categoryLabel(category, l10n),
+                      categoryLabel(category, l10n),
                       style: AppTypography.labelLarge,
                     ),
                   ),

@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
 import 'package:lull/models/sound_model.dart';
+import 'package:lull/providers/audio/audio_provider.dart';
+import 'package:lull/shared/utils/utils.dart';
 import 'package:lull/shared/widgets/glass_container.dart';
-import 'active_sound.dart';
 
-class SoundMixer extends StatelessWidget {
-  const SoundMixer({
-    super.key,
-    required this.sounds,
-    required this.volumes,
-    required this.onVolumeChanged,
-  });
-
-  final List<ActiveSound> sounds;
-  final Map<String, double> volumes;
-  final void Function(String id, double volume) onVolumeChanged;
+class SoundMixer extends ConsumerWidget {
+  const SoundMixer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final soundsList = ref.watch(audioProvider.select((s) => s.sounds));
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: DesignTokens.spacing3),
           child: Text(
             'MIXER',
             style: AppTypography.labelSmall.copyWith(
@@ -39,19 +34,22 @@ class SoundMixer extends StatelessWidget {
             vertical: DesignTokens.spacing3,
           ),
           child: Column(
-            children: List.generate(sounds.length, (i) {
-              final sound = sounds[i];
+            children: List.generate(soundsList.length, (i) {
+              final soundItemState = soundsList[i];
               return Column(
                 children: [
                   SoundVolumeRow(
-                    sound: sound,
-                    volume: volumes[sound.id] ?? 0.5,
-                    onChanged: (v) => onVolumeChanged(sound.id, v),
+                    sound: soundItemState.sound,
+                    volume: soundItemState.volume,
+                    onChanged: (v) {
+                      // Find the provider logic to change volume
+                      // ref.read(audioProvider.notifier).setVolume(sound.id, v);
+                    },
                   ),
-                  if (i < sounds.length - 1)
+                  if (i < soundsList.length - 1)
                     Divider(
-                      color: AppColors.outline.withValues(alpha: 0.40),
-                      height: 1,
+                      color: AppColors.outline.withValues(alpha: .40),
+                      height: DesignTokens.spacing1,
                     ),
                 ],
               );
@@ -73,39 +71,32 @@ class SoundVolumeRow extends StatelessWidget {
     required this.onChanged,
   });
 
-  final ActiveSound sound;
+  final SoundItem sound;
   final double volume;
   final ValueChanged<double> onChanged;
 
-  Color get _categoryColor => switch (sound.category) {
-        SoundCategory.rain => AppColors.tertiary,
-        SoundCategory.thunder => AppColors.secondary,
-        SoundCategory.nature => const Color(0xFF7EC8A0),
-        SoundCategory.whiteNoise => AppColors.onSurfaceVariant,
-        SoundCategory.urban => const Color(0xFFE8A870),
-      };
-
   @override
   Widget build(BuildContext context) {
+    final Color categoryColor = colorForCategory(sound);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: DesignTokens.spacing3),
       child: Row(
         children: [
           // Category icon chip
           Container(
-            width: 36,
-            height: 36,
+            width: DesignTokens.iconXl,
+            height: DesignTokens.iconXl,
             decoration: BoxDecoration(
-              color: _categoryColor.withValues(alpha: 0.12),
+              color: categoryColor.withValues(alpha: .12),
               borderRadius: DesignTokens.borderRadiusSm,
             ),
             child: Icon(
-              sound.icon,
-              size: DesignTokens.iconSm,
-              color: _categoryColor,
+              iconForCategory(sound),
+              size: DesignTokens.iconLg,
+              color: categoryColor,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: DesignTokens.spacing3),
           // Sound name
           Expanded(
             flex: 2,
@@ -115,32 +106,32 @@ class SoundVolumeRow extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 8),
-          // Volume slider
+          const SizedBox(width: DesignTokens.spacing2),
+
           Expanded(
             flex: 3,
             child: SliderTheme(
               data: SliderTheme.of(context).copyWith(
-                trackHeight: 3,
+                trackHeight: DesignTokens.spacing1,
                 thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
                 overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
-                activeTrackColor: _categoryColor,
-                inactiveTrackColor: AppColors.outline.withValues(alpha: 0.40),
-                thumbColor: _categoryColor,
-                overlayColor: _categoryColor.withValues(alpha: 0.15),
+                activeTrackColor: categoryColor,
+                inactiveTrackColor: AppColors.outline.withValues(alpha: .40),
+                thumbColor: categoryColor,
+                overlayColor: categoryColor.withValues(alpha: .15),
               ),
               child: Slider(value: volume, onChanged: onChanged),
             ),
           ),
-          const SizedBox(width: 6),
+          const SizedBox(width: DesignTokens.spacing1),
           // Volume level icon
           Icon(
             volume == 0
                 ? Icons.volume_off_rounded
                 : volume < 0.5
-                    ? Icons.volume_down_rounded
-                    : Icons.volume_up_rounded,
-            size: 16,
+                ? Icons.volume_down_rounded
+                : Icons.volume_up_rounded,
+            size: DesignTokens.iconSm,
             color: AppColors.onSurfaceVariant,
           ),
         ],

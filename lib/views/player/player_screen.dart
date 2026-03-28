@@ -6,8 +6,8 @@ import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/views/player/widgets/player_header.dart';
 import 'package:lull/views/player/widgets/player_title.dart';
+import 'package:lull/views/player/widgets/sound_mixer.dart';
 
-import 'widgets/active_sound.dart';
 import 'widgets/player_controls.dart';
 import 'widgets/progress_bar.dart';
 
@@ -27,7 +27,6 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
 
   // ── UI state ───────────────────────────────────────────────────────────────
   int _selectedTimer = 30;
-  late Map<String, double> _volumes;
 
   AudioNotifier get audioNotifier => ref.read(audioProvider.notifier);
 
@@ -41,8 +40,6 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   @override
   void initState() {
     super.initState();
-
-    _volumes = {for (final s in mockSounds) s.id: s.volume};
 
     _pulseCtrl = AnimationController(
       vsync: this,
@@ -125,12 +122,8 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                   onTogglePlay: _togglePlay,
                   onStopAll: _stopAll,
                 ),
-                // const SizedBox(height: DesignTokens.spacing5),
-                // SoundMixer(
-                //   sounds: mockSounds,
-                //   volumes: _volumes,
-                //   onVolumeChanged: (id, v) => setState(() => _volumes[id] = v),
-                // ),
+                const SizedBox(height: DesignTokens.spacing5),
+                SoundMixer(),
                 // const SizedBox(height: DesignTokens.spacing5),
                 // SleepTimerSection(
                 //   selectedMinutes: _selectedTimer,
