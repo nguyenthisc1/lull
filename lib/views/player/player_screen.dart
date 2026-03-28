@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
-import 'package:lull/models/sound_model.dart';
 import 'package:lull/providers/audio/audio_provider.dart';
+import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/views/player/widgets/player_header.dart';
 import 'package:lull/views/player/widgets/player_title.dart';
@@ -26,19 +26,16 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   late final AnimationController _progressCtrl;
 
   // ── UI state ───────────────────────────────────────────────────────────────
-  bool _isPlaying = false;
   int _selectedTimer = 30;
   late Map<String, double> _volumes;
 
-  final sound = SoundItem(
-    id: 'nature_backyard',
-    name: 'Backyard Sounds',
-    assetPath: 'assets/sounds/nature/Backyard-sounds.mp3',
-    iconName: SoundIconName.yard.name,
-    category: SoundCategory.nature,
-  );
-
   AudioNotifier get audioNotifier => ref.read(audioProvider.notifier);
+
+  bool get _isPlaying => ref.watch(
+    audioProvider.select(
+      (s) => s.currentSingle?.playbackState == PlaybackState.playing,
+    ),
+  );
 
   static const _loopLength = Duration(minutes: 3);
   @override
@@ -71,10 +68,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   // ── Playback actions ───────────────────────────────────────────────────────
 
   void _togglePlay() async {
-    setState(() {
-      _isPlaying = !_isPlaying;
-    });
-    await audioNotifier.playSingle(sound);
+    await audioNotifier.toggleSound();
     if (_isPlaying) {
       _pulseCtrl.repeat(reverse: true);
       _progressCtrl.forward();

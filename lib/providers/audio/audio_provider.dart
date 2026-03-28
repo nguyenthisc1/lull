@@ -13,13 +13,17 @@ class AudioNotifier extends StateNotifier<AudioState> {
       super(AudioIdle());
 
   /// Toggle a sound in the current mode.
-  Future<void> toggleSound(SoundItem sound) async {
+  Future<void> toggleSound() async {
+    if (state.currentSingle == null) return;
+
+    final currentSound = state.currentSingle?.sound;
+
     if (state is AudioIdle || state is AudioSingle) {
-      return await playSingle(sound);
+      return await playSingle(currentSound!);
     }
 
     if (state is AudioMixing) {
-      return await playMixer(sound);
+      return await playMixer(currentSound!);
     }
   }
 
