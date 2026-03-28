@@ -1,50 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
+import 'package:lull/models/sound_model.dart';
+import 'package:lull/providers/audio/audio_provider.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
+import 'package:lull/views/player/widgets/player_header.dart';
+import 'package:lull/views/player/widgets/player_title.dart';
+
 import 'widgets/active_sound.dart';
 import 'widgets/player_controls.dart';
-import 'widgets/player_header.dart';
 import 'widgets/progress_bar.dart';
-import 'widgets/sleep_timer_section.dart';
-import 'widgets/sound_mixer.dart';
-import 'widgets/waveform.dart';
 
-class PlayerScreen extends StatefulWidget {
+class PlayerScreen extends ConsumerStatefulWidget {
   const PlayerScreen({super.key});
 
   @override
-  State<PlayerScreen> createState() => _PlayerScreenState();
+  ConsumerState<PlayerScreen> createState() => _PlayerScreenState();
 }
 
-class _PlayerScreenState extends State<PlayerScreen>
+class _PlayerScreenState extends ConsumerState<PlayerScreen>
     with TickerProviderStateMixin {
   // ── Animation controllers ───────────────────────────────────────────────────
 
-  late final AnimationController _waveCtrl;
   late final AnimationController _pulseCtrl;
-
-  /// Simulates SoLoud.instance.getPosition(handle) / getLength(handle).
-  /// Replace with a periodic Timer polling SoLoud in production.
   late final AnimationController _progressCtrl;
 
   // ── UI state ───────────────────────────────────────────────────────────────
-
-  bool _isPlaying = true;
+  bool _isPlaying = false;
   int _selectedTimer = 30;
   late Map<String, double> _volumes;
 
-  static const _loopLength = Duration(minutes: 3);
+  final sound = SoundItem(
+    id: 'nature_backyard',
+    name: 'Backyard Sounds',
+    assetPath: 'assets/sounds/nature/Backyard-sounds.mp3',
+    iconName: SoundIconName.yard.name,
+    category: SoundCategory.nature,
+  );
 
+  AudioNotifier get audioNotifier => ref.read(audioProvider.notifier);
+
+  static const _loopLength = Duration(minutes: 3);
   @override
   void initState() {
     super.initState();
 
     _volumes = {for (final s in mockSounds) s.id: s.volume};
-
-    _waveCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1600),
-    )..repeat();
 
     _pulseCtrl = AnimationController(
       vsync: this,
@@ -62,7 +63,6 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   @override
   void dispose() {
-    _waveCtrl.dispose();
     _pulseCtrl.dispose();
     _progressCtrl.dispose();
     super.dispose();
@@ -70,25 +70,25 @@ class _PlayerScreenState extends State<PlayerScreen>
 
   // ── Playback actions ───────────────────────────────────────────────────────
 
-  void _togglePlay() {
-    setState(() => _isPlaying = !_isPlaying);
+  void _togglePlay() async {
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+    await audioNotifier.playSingle(sound);
     if (_isPlaying) {
-      _waveCtrl.repeat();
       _pulseCtrl.repeat(reverse: true);
       _progressCtrl.forward();
     } else {
-      _waveCtrl.stop();
       _pulseCtrl.stop();
       _progressCtrl.stop();
     }
   }
 
   void _stopAll() {
-    setState(() => _isPlaying = false);
-    _waveCtrl.stop();
     _pulseCtrl.stop();
     _progressCtrl.forward(from: 0);
     _progressCtrl.stop();
+    audioNotifier.stopAll();
   }
 
   Duration get _position => _loopLength * _progressCtrl.value;
@@ -105,19 +105,16 @@ class _PlayerScreenState extends State<PlayerScreen>
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
               DesignTokens.spacing4,
-              topPadding + DesignTokens.spacing8,
+              topPadding + DesignTokens.spacing10,
               DesignTokens.spacing4,
               DesignTokens.navHeight + DesignTokens.spacing5,
             ),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                PlayerHeader(soundCount: mockSounds.length),
+                PlayerHeader(),
                 const SizedBox(height: DesignTokens.spacing5),
-                PlayerWaveform(
-                  controller: _waveCtrl,
-                  isPlaying: _isPlaying,
-                ),
-                const SizedBox(height: DesignTokens.spacing4),
+                PlayerTitle(),
+                const SizedBox(height: DesignTokens.spacing5),
                 AnimatedBuilder(
                   animation: _progressCtrl,
                   builder: (_, _) => SoLoudProgressBar(
@@ -134,19 +131,18 @@ class _PlayerScreenState extends State<PlayerScreen>
                   onTogglePlay: _togglePlay,
                   onStopAll: _stopAll,
                 ),
-                const SizedBox(height: DesignTokens.spacing5),
-                SoundMixer(
-                  sounds: mockSounds,
-                  volumes: _volumes,
-                  onVolumeChanged: (id, v) =>
-                      setState(() => _volumes[id] = v),
-                ),
-                const SizedBox(height: DesignTokens.spacing5),
-                SleepTimerSection(
-                  selectedMinutes: _selectedTimer,
-                  presets: timerPresets,
-                  onSelect: (min) => setState(() => _selectedTimer = min),
-                ),
+                // const SizedBox(height: DesignTokens.spacing5),
+                // SoundMixer(
+                //   sounds: mockSounds,
+                //   volumes: _volumes,
+                //   onVolumeChanged: (id, v) => setState(() => _volumes[id] = v),
+                // ),
+                // const SizedBox(height: DesignTokens.spacing5),
+                // SleepTimerSection(
+                //   selectedMinutes: _selectedTimer,
+                //   presets: timerPresets,
+                //   onSelect: (min) => setState(() => _selectedTimer = min),
+                // ),
               ]),
             ),
           ),

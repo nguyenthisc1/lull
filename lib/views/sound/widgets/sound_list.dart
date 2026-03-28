@@ -57,8 +57,8 @@ class SoundList extends ConsumerWidget {
     final isPlaying = ref.watch(
       audioProvider.select(
         (s) =>
-            s.singleSound?.sound.id == sound.id &&
-            s.singleSound?.playbackState == PlaybackState.playing,
+            s.currentSingle?.sound.id == sound.id &&
+            s.currentSingle?.playbackState == PlaybackState.playing,
       ),
     );
 
@@ -131,8 +131,7 @@ class SoundList extends ConsumerWidget {
           ),
           PlayerButton(
             isPlaying: isPlaying,
-            onTogglePlay: () =>
-                audioNotifier.toggleSound(sound, AudioMode.single),
+            onTogglePlay: () => audioNotifier.playSingle(sound),
             glowAlpha: 0,
             size: DesignTokens.iconXl, // 48
             iconSize: DesignTokens.iconMd, // 24
