@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/providers/audio/audio_provider.dart';
@@ -6,6 +7,7 @@ import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/views/player/widgets/player_header.dart';
 import 'package:lull/views/player/widgets/player_title.dart';
+import 'package:lull/views/player/widgets/sleep_timer.dart';
 import 'package:lull/views/player/widgets/sound_mixer.dart';
 
 import 'widgets/player_controls.dart';
@@ -23,20 +25,22 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   // ── Animation controllers ───────────────────────────────────────────────────
 
   late final AnimationController _pulseCtrl;
-  late final AnimationController _progressCtrl;
+  late final Ticker _sleepTimerTicker;
 
   // ── UI state ───────────────────────────────────────────────────────────────
-  int _selectedTimer = 30;
+  int _selectedTimer = 30; // minutes; 0 = Off
+  Duration _sleepTimeLeft = Duration.zero;
+  bool _sleepTimerActive = false;
 
-  AudioNotifier get audioNotifier => ref.read(audioProvider.notifier);
+  // Tracks the ticker's elapsed at the last 1-second decrement, so we only
+  // decrement once per wall-clock second (Ticker fires every frame, not every second).
+  Duration _lastTickElapsed = Duration.zero;
 
-  bool get _isPlaying => ref.watch(
-    audioProvider.select(
-      (s) => s.currentSingle?.playbackState == PlaybackState.playing,
-    ),
-  );
+  static const List<int> _sleepTimerPresets = [10, 30, 60, 0]; // 0 = Off
 
-  static const _loopLength = Duration(minutes: 3);
+  AudioNotifier? _audioNotifier;
+  bool? _lastIsPlaying;
+
   @override
   void initState() {
     super.initState();
@@ -46,47 +50,125 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
       duration: const Duration(milliseconds: 2200),
     )..repeat(reverse: true);
 
-    _progressCtrl = AnimationController(vsync: this, duration: _loopLength);
-    _progressCtrl.addStatusListener((status) {
-      if (status == AnimationStatus.completed && _isPlaying) {
-        _progressCtrl.forward(from: 0);
-      }
+    if (_selectedTimer > 0) {
+      _sleepTimerActive = true;
+      _sleepTimeLeft = Duration(minutes: _selectedTimer);
+    }
+
+    // Ticker fires every frame (~60 fps). We gate on a 1-second wall-clock
+    // interval using _lastTickElapsed so we only decrement once per second.
+    _sleepTimerTicker = createTicker((Duration elapsed) {
+      if (!(_lastIsPlaying ?? false) || !_sleepTimerActive || !mounted) return;
+
+      final sinceLastDecrement = elapsed - _lastTickElapsed;
+      if (sinceLastDecrement < const Duration(seconds: 1)) return;
+
+      _lastTickElapsed = elapsed;
+
+      setState(() {
+        if (_sleepTimeLeft > const Duration(seconds: 1)) {
+          _sleepTimeLeft -= const Duration(seconds: 1);
+        } else {
+          _sleepTimeLeft = Duration.zero;
+          _sleepTimerActive = false;
+          _pulseCtrl.stop();
+          _audioNotifier?.stopAll();
+          _sleepTimerTicker.stop();
+        }
+      });
     });
-    _progressCtrl.forward(from: 0.18);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _audioNotifier = ref.read(audioProvider.notifier);
+    // Get _isPlaying for the first time safely
+    final isPlaying = ref.watch(
+      audioProvider.select(
+        (s) => s.currentSingle?.playbackState == PlaybackState.playing,
+      ),
+    );
+    _updateSleepTimerTicker(isPlaying);
+    _lastIsPlaying = isPlaying;
+  }
+
+  void _updateSleepTimerTicker(bool isPlaying) {
+    if (_sleepTimerActive && isPlaying && !_sleepTimerTicker.isActive) {
+      _sleepTimerTicker.start();
+    }
+    if (!_sleepTimerActive || !isPlaying) {
+      _sleepTimerTicker.stop();
+    }
   }
 
   @override
   void dispose() {
     _pulseCtrl.dispose();
-    _progressCtrl.dispose();
+    _sleepTimerTicker.dispose();
     super.dispose();
   }
 
   // ── Playback actions ───────────────────────────────────────────────────────
 
-  void _togglePlay() async {
-    await audioNotifier.toggleSound();
-    if (_isPlaying) {
+  void _togglePlay(bool isPlaying) async {
+    await _audioNotifier?.toggleSound();
+    if (!isPlaying) {
+      // Starting playback
       _pulseCtrl.repeat(reverse: true);
-      _progressCtrl.forward();
+      if (_sleepTimerActive && !_sleepTimerTicker.isActive) {
+        _lastTickElapsed = Duration.zero;
+        _sleepTimerTicker.start();
+      }
     } else {
+      // Pausing playback
       _pulseCtrl.stop();
-      _progressCtrl.stop();
+      _sleepTimerTicker.stop();
     }
+    setState(() {
+      _lastIsPlaying = !isPlaying;
+    });
   }
 
   void _stopAll() {
     _pulseCtrl.stop();
-    _progressCtrl.forward(from: 0);
-    _progressCtrl.stop();
-    audioNotifier.stopAll();
+    _sleepTimerTicker.stop();
+    _audioNotifier?.stopAll();
   }
 
-  Duration get _position => _loopLength * _progressCtrl.value;
+  void _onSelectSleepTimer(int min, bool isPlaying) {
+    setState(() {
+      _selectedTimer = min;
+      if (min > 0) {
+        _sleepTimeLeft = Duration(minutes: min);
+        _sleepTimerActive = true;
+        if (_sleepTimerTicker.isActive) _sleepTimerTicker.stop();
+        if (isPlaying) {
+          _lastTickElapsed = Duration.zero;
+          _sleepTimerTicker.start();
+        }
+      } else {
+        _sleepTimeLeft = Duration.zero;
+        _sleepTimerActive = false;
+        _sleepTimerTicker.stop();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.paddingOf(context).top;
+    final isPlaying = ref.watch(
+      audioProvider.select(
+        (s) => s.currentSingle?.playbackState == PlaybackState.playing,
+      ),
+    );
+    _lastIsPlaying = isPlaying; // Sync last known
+
+    // Start/stop ticker as needed based on state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateSleepTimerTicker(isPlaying);
+    });
 
     return MyScaffold(
       extendBodyBehindAppBar: true,
@@ -106,30 +188,32 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                 const SizedBox(height: DesignTokens.spacing5),
                 PlayerTitle(),
                 const SizedBox(height: DesignTokens.spacing5),
-                AnimatedBuilder(
-                  animation: _progressCtrl,
-                  builder: (_, _) => SoLoudProgressBar(
-                    position: _position,
-                    length: _loopLength,
-                    onSeek: (pos) => _progressCtrl.value =
-                        pos.inMilliseconds / _loopLength.inMilliseconds,
-                  ),
+                SoLoudProgressBar(
+                  sleepTimeLeft: _sleepTimerActive && _selectedTimer > 0
+                      ? _sleepTimeLeft
+                      : null,
+                  isOff: _selectedTimer == 0,
                 ),
                 const SizedBox(height: DesignTokens.spacing5),
+                SleepTimer(
+                  selectedMinutes: _selectedTimer,
+                  presets: _sleepTimerPresets,
+                  onSelect: (min) => _onSelectSleepTimer(min, isPlaying),
+                  sleepTimeLeft: _sleepTimerActive && _selectedTimer > 0
+                      ? _sleepTimeLeft
+                      : null,
+                ),
+                const SizedBox(height: DesignTokens.spacing8),
                 PlayerControls(
-                  isPlaying: _isPlaying,
+                  isPlaying: isPlaying,
                   pulseController: _pulseCtrl,
-                  onTogglePlay: _togglePlay,
+                  onTogglePlay: () => _togglePlay(isPlaying),
                   onStopAll: _stopAll,
                 ),
+
                 const SizedBox(height: DesignTokens.spacing5),
                 SoundMixer(),
-                // const SizedBox(height: DesignTokens.spacing5),
-                // SleepTimerSection(
-                //   selectedMinutes: _selectedTimer,
-                //   presets: timerPresets,
-                //   onSelect: (min) => setState(() => _selectedTimer = min),
-                // ),
+                const SizedBox(height: DesignTokens.spacing5),
               ]),
             ),
           ),

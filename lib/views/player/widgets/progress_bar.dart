@@ -2,167 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
 
-/// Displays the current playback position as a styled progress slider.
-///
-/// Wire to SoLoud in production:
-/// ```dart
-/// position: SoLoud.instance.getPosition(handle),
-/// length:   SoLoud.instance.getLength(handle),
-/// onSeek:   (pos) => SoLoud.instance.seek(handle, pos),
-/// ```
+/// Displays either a sleep-timer countdown (`MM.SS`) or an infinity icon
+/// when the timer is off.
 class SoLoudProgressBar extends StatelessWidget {
   const SoLoudProgressBar({
     super.key,
-    required this.position,
-    required this.length,
-    this.onSeek,
+    this.sleepTimeLeft,
+    this.isOff = false,
   });
 
-  final Duration position;
-  final Duration length;
-  final void Function(Duration)? onSeek;
+  /// Remaining sleep time. Null is treated the same as [isOff].
+  final Duration? sleepTimeLeft;
 
-  double get _progress =>
-      length.inMilliseconds == 0
-          ? 0
-          : (position.inMilliseconds / length.inMilliseconds).clamp(0.0, 1.0);
+  /// When true, shows ∞ instead of a countdown.
+  final bool isOff;
 
+  // MM.SS format with dot separator: 30.00 → 29.59 → …
   String _fmt(Duration d) {
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return '$m:$s';
+    return '$m.$s';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            trackHeight: 3.5,
-            thumbShape: GlowThumbShape(),
-            overlayShape: SliderComponentShape.noOverlay,
-            activeTrackColor: AppColors.primary,
-            inactiveTrackColor: AppColors.outline.withValues(alpha: 0.35),
-            thumbColor: AppColors.primary,
-            trackShape: GradientTrackShape(),
-          ),
-          child: Slider(
-            value: _progress,
-            onChanged: (v) => onSeek?.call(length * v),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: Row(
-            children: [
-              Text(_fmt(position), style: AppTypography.bodySmall),
-              const Spacer(),
-              Text(_fmt(length), style: AppTypography.bodySmall),
-            ],
-          ),
-        ),
-      ],
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 350),
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeIn,
+      child: isOff || sleepTimeLeft == null
+          ? _buildOff()
+          : _buildCountdown(),
     );
   }
-}
 
-// ── Glowing thumb ─────────────────────────────────────────────────────────────
-
-class GlowThumbShape extends SliderComponentShape {
-  @override
-  Size getPreferredSize(bool isEnabled, bool isDiscrete) => const Size(16, 16);
-
-  @override
-  void paint(
-    PaintingContext context,
-    Offset center, {
-    required Animation<double> activationAnimation,
-    required Animation<double> enableAnimation,
-    required bool isDiscrete,
-    required TextPainter labelPainter,
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required TextDirection textDirection,
-    required double value,
-    required double textScaleFactor,
-    required Size sizeWithOverflow,
-  }) {
-    final canvas = context.canvas;
-
-    // Soft glow ring
-    canvas.drawCircle(
-      center,
-      12,
-      Paint()
-        ..color = AppColors.primary.withValues(alpha: 0.25)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8),
-    );
-
-    // Gradient-filled solid thumb
-    canvas.drawCircle(
-      center,
-      7,
-      Paint()
-        ..shader = const LinearGradient(
-          colors: AppColors.primaryGradient,
-        ).createShader(Rect.fromCircle(center: center, radius: 7)),
+  Widget _buildCountdown() {
+    return Center(
+      key: const ValueKey('countdown'),
+      child: Text(
+        _fmt(sleepTimeLeft!),
+        style: AppTypography.displaySmall.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: 6,
+          color: AppColors.onSurface,
+        ),
+      ),
     );
   }
-}
 
-// ── Gradient active track ─────────────────────────────────────────────────────
-
-class GradientTrackShape extends RoundedRectSliderTrackShape {
-  @override
-  void paint(
-    PaintingContext context,
-    Offset offset, {
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required Animation<double> enableAnimation,
-    required TextDirection textDirection,
-    required Offset thumbCenter,
-    Offset? secondaryOffset,
-    bool isDiscrete = false,
-    bool isEnabled = false,
-    double additionalActiveTrackHeight = 0,
-  }) {
-    final trackRect = getPreferredRect(
-      parentBox: parentBox,
-      offset: offset,
-      sliderTheme: sliderTheme,
-      isEnabled: isEnabled,
-      isDiscrete: isDiscrete,
+  Widget _buildOff() {
+    return Center(
+      key: const ValueKey('off'),
+      child: Icon(
+        Icons.all_inclusive_rounded,
+        size: 44,
+        color: AppColors.onSurfaceVariant,
+      ),
     );
-
-    final radius = Radius.circular(trackRect.height / 2);
-
-    // Inactive (full) track background
-    context.canvas.drawRRect(
-      RRect.fromRectAndRadius(trackRect, radius),
-      Paint()..color = sliderTheme.inactiveTrackColor ?? AppColors.outline,
-    );
-
-    // Active portion with gradient fill
-    final activeRect = Rect.fromLTRB(
-      trackRect.left,
-      trackRect.top,
-      thumbCenter.dx,
-      trackRect.bottom,
-    );
-    if (activeRect.width > 0) {
-      context.canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          activeRect,
-          topLeft: radius,
-          bottomLeft: radius,
-        ),
-        Paint()
-          ..shader = const LinearGradient(
-            colors: AppColors.primaryGradient,
-          ).createShader(activeRect),
-      );
-    }
   }
 }
