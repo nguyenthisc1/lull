@@ -47,7 +47,7 @@ class SoundNotifier extends StateNotifier<SoundState> {
   }
 
   Future<void> loadByCategory(SoundCategory? category) async {
-    if (state is SoundLoaded) return;
+    if (state is! SoundLoaded) return;
 
     state = const SoundLoading();
 
@@ -57,7 +57,6 @@ class SoundNotifier extends StateNotifier<SoundState> {
     }
 
     final filtered = _allSounds.where((s) => s.category == category).toList();
-
     state = SoundLoaded(sounds: filtered, selectedCategory: category);
   }
 }
