@@ -131,7 +131,7 @@ class SoundList extends ConsumerWidget {
           ),
           PlayerButton(
             isPlaying: isPlaying,
-            onTogglePlay: () => audioNotifier.playSingle(sound),
+            onTogglePlay: () => audioNotifier.handlePlaySingle(sound),
             glowAlpha: 0,
             size: DesignTokens.iconXl, // 48
             iconSize: DesignTokens.iconMd, // 24

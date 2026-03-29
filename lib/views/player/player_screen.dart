@@ -28,7 +28,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   late final Ticker _sleepTimerTicker;
 
   // ── UI state ───────────────────────────────────────────────────────────────
-  int _selectedTimer = 30; // minutes; 0 = Off
+  int _selectedTimer = 30;
   Duration _sleepTimeLeft = Duration.zero;
   bool _sleepTimerActive = false;
 
@@ -112,7 +112,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   // ── Playback actions ───────────────────────────────────────────────────────
 
   void _togglePlay(bool isPlaying) async {
-    await _audioNotifier?.toggleSound();
+    await _audioNotifier?.handleToggleSound();
     if (!isPlaying) {
       // Starting playback
       _pulseCtrl.repeat(reverse: true);

@@ -1,6 +1,6 @@
 import '../models/sound_model.dart';
 
-abstract interface class SoundsRepository {
+abstract class SoundsRepository {
   Future<List<SoundItem>> getAllSounds();
   Future<List<SoundItem>> getByCategory(SoundCategory category);
 }
@@ -223,5 +223,4 @@ class LocalSoundsRepository implements SoundsRepository {
   Future<List<SoundItem>> getByCategory(SoundCategory category) async {
     return _sounds.where((s) => s.category == category).toList();
   }
-
 }

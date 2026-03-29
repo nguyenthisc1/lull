@@ -12,68 +12,70 @@ class AudioNotifier extends StateNotifier<AudioState> {
     : _service = service,
       super(AudioIdle());
 
-  /// Toggle a sound in the current mode.
-  Future<void> toggleSound() async {
+  Future<void> handleToggleSound() async {
     if (state.currentSingle == null) return;
 
     final currentSound = state.currentSingle?.sound;
 
     if (state is AudioIdle || state is AudioSingle) {
-      return await playSingle(currentSound!);
+      return await handlePlaySingle(currentSound!);
     }
 
     if (state is AudioMixing) {
-      return await playMixer(currentSound!);
+      return await handlePlayMixer(currentSound!);
     }
   }
 
-  /// Play a single sound (solo mode)
-  Future<void> playSingle(SoundItem sound) async {
+  Future<void> handlePlaySingle(SoundItem sound) async {
     if (state is AudioSingle) {
-      final current = (state as AudioSingle).singleSound;
-      final isSameSound = current.sound.id == sound.id;
+      final current = state as AudioSingle;
 
-      if (!isSameSound) {
+      final isSame = current.singleSound.sound.id == sound.id;
+
+      if (!isSame) {
         await _service.disposeAllMulti();
-        state = AudioSingle(
+
+        final next = AudioSingle(
           singleSound: AudioItemState(
             volume: 0.5,
             playbackState: PlaybackState.playing,
             sound: sound,
           ),
         );
+
+        state = next;
         await _service.playSingle(sound.id, sound.assetPath);
         return;
       }
 
-      if (current.playbackState == PlaybackState.playing) {
-        state = AudioSingle(
-          singleSound: current.copyWith(playbackState: PlaybackState.paused),
-        );
-        await _service.pauseSingle();
-      } else {
-        state = AudioSingle(
-          singleSound: current.copyWith(playbackState: PlaybackState.playing),
-        );
+      final next = current.toggle();
+      state = next;
+
+      if (next.singleSound.playbackState == PlaybackState.playing) {
         await _service.resumeSingle();
+      } else {
+        await _service.pauseSingle();
       }
+
       return;
     }
 
-    // From idle or mixing state — start fresh single playback
+    // idle / mixing
     await _service.disposeAllMulti();
-    state = AudioSingle(
+
+    final next = AudioSingle(
       singleSound: AudioItemState(
         volume: 0.5,
         playbackState: PlaybackState.playing,
         sound: sound,
       ),
     );
+
+    state = next;
     await _service.playSingle(sound.id, sound.assetPath);
   }
 
-  /// Add or resume a sound in the mixer (multi) mode
-  Future<void> playMixer(SoundItem sound) async {
+  Future<void> handlePlayMixer(SoundItem sound) async {
     if (state is! AudioMixing) return;
 
     final Map<String, AudioItemState> mapSounds =
@@ -89,8 +91,6 @@ class AudioNotifier extends StateNotifier<AudioState> {
         volume: 0.5,
         playbackState: PlaybackState.playing,
       );
-
-      state = AudioMixing(mixerSounds: mapSounds);
 
       await _service.playMulti(sound.id, sound.assetPath);
       return;
@@ -146,7 +146,6 @@ class AudioNotifier extends StateNotifier<AudioState> {
     }
   }
 
-  /// Stop all currently playing sounds and reset state.
   void stopAll() {
     _service.stopAll();
     state = AudioIdle();

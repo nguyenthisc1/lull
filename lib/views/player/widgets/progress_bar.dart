@@ -5,11 +5,7 @@ import 'package:lull/core/theme/app_typography.dart';
 /// Displays either a sleep-timer countdown (`MM.SS`) or an infinity icon
 /// when the timer is off.
 class SoLoudProgressBar extends StatelessWidget {
-  const SoLoudProgressBar({
-    super.key,
-    this.sleepTimeLeft,
-    this.isOff = false,
-  });
+  const SoLoudProgressBar({super.key, this.sleepTimeLeft, this.isOff = false});
 
   /// Remaining sleep time. Null is treated the same as [isOff].
   final Duration? sleepTimeLeft;
@@ -17,8 +13,19 @@ class SoLoudProgressBar extends StatelessWidget {
   /// When true, shows ∞ instead of a countdown.
   final bool isOff;
 
-  // MM.SS format with dot separator: 30.00 → 29.59 → …
+  // MM.SS format with dot separator: 30.00 → 29.59 → … and 60.00 if 60+ minutes
   String _fmt(Duration d) {
+    if (d.inSeconds <= 0) return "00.00";
+
+    // If duration is a round number of minutes and seconds == 0, display X.00, otherwise decrement by 1s
+    final isExactMinute = d.inSeconds % 60 == 0;
+
+    // If 60+ minutes, display 60.00 (not 00.00)
+    if (d.inMinutes >= 60 && isExactMinute) {
+      return "60.00";
+    }
+
+    // Else, show [mm.ss]
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
     return '$m.$s';
@@ -30,9 +37,7 @@ class SoLoudProgressBar extends StatelessWidget {
       duration: const Duration(milliseconds: 350),
       switchInCurve: Curves.easeOut,
       switchOutCurve: Curves.easeIn,
-      child: isOff || sleepTimeLeft == null
-          ? _buildOff()
-          : _buildCountdown(),
+      child: isOff || sleepTimeLeft == null ? _buildOff() : _buildCountdown(),
     );
   }
 

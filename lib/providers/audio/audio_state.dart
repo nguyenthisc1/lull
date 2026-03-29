@@ -39,8 +39,10 @@ sealed class AudioState extends Equatable {
 }
 
 class AudioIdle extends AudioState {
+  static const _empty = <AudioItemState>[];
+
   @override
-  List<AudioItemState> get sounds => [];
+  List<AudioItemState> get sounds => _empty;
 
   @override
   AudioItemState? get currentSingle => null;
@@ -51,21 +53,36 @@ class AudioIdle extends AudioState {
 
 class AudioMixing extends AudioState {
   final Map<String, AudioItemState> mixerSounds;
+  late final List<AudioItemState> _sounds = List.unmodifiable(
+    mixerSounds.values,
+  );
 
-  AudioMixing({required this.mixerSounds});
+  AudioMixing({required Map<String, AudioItemState> mixerSounds})
+    : mixerSounds = Map.unmodifiable(mixerSounds);
 
   AudioMixing copyWith({Map<String, AudioItemState>? mixerSounds}) {
     return AudioMixing(mixerSounds: mixerSounds ?? this.mixerSounds);
   }
 
+  AudioMixing addSound(String id, AudioItemState sound) {
+    final newMap = Map<String, AudioItemState>.from(mixerSounds);
+    newMap[id] = sound;
+
+    return AudioMixing(mixerSounds: newMap);
+  }
+
+  // Bad performance when get sounds create new list
+  // @override
+  // List<AudioItemState> get sounds => mixerSounds.values.toList();
+
   @override
-  List<AudioItemState> get sounds => mixerSounds.values.toList();
+  List<AudioItemState> get sounds => _sounds;
 
   @override
   AudioItemState? get currentSingle => null;
 
   @override
-  List<Object?> get props => [mixerSounds.entries.toList()];
+  List<Object?> get props => [mixerSounds];
 }
 
 class AudioSingle extends AudioState {
@@ -82,6 +99,13 @@ class AudioSingle extends AudioState {
 
   @override
   AudioItemState? get currentSingle => singleSound;
+
+  AudioSingle toggle() {
+    final updated = singleSound.playbackState == PlaybackState.playing
+        ? singleSound.copyWith(playbackState: PlaybackState.paused)
+        : singleSound.copyWith(playbackState: PlaybackState.playing);
+    return AudioSingle(singleSound: updated);
+  }
 
   @override
   List<Object?> get props => [singleSound];
