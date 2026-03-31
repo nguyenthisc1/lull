@@ -13,8 +13,6 @@ class AudioNotifier extends StateNotifier<AudioState> {
     : _service = service,
       super(AudioIdle());
 
-  /// Optimistic toggle: state updates immediately for responsive UI,
-  /// then service calls are made. On error the old state is restored.
   Future<void> handleToggleSound(SoundItem sound) async {
     final oldState = state;
     final newState = oldState.toggle(sound, _mode);
@@ -23,38 +21,52 @@ class AudioNotifier extends StateNotifier<AudioState> {
 
     try {
       if (newState is AudioSingle) {
-        final isNewSound =
-            oldState is! AudioSingle ||
-            oldState.singleSound.sound.id != sound.id;
-
-        if (isNewSound) {
-          if (oldState is AudioSingle) await _service.disposeSingle();
-          if (oldState is AudioMixing) await _service.disposeAllMulti();
-          await _service.playSingle(sound.id, sound.assetPath);
-        } else if (newState.singleSound.playbackState == PlaybackState.playing) {
-          await _service.resumeSingle();
-        } else {
-          await _service.pauseSingle();
-        }
+        await _handleSingleMode(oldState, newState, sound);
       } else if (newState is AudioMixing) {
-        final soundRemovedFromMixer =
-            oldState is AudioMixing && oldState.mixerSounds.containsKey(sound.id);
-
-        if (soundRemovedFromMixer) {
-          await _service.stopMulti(sound.id);
-        } else {
-          if (oldState is AudioSingle) await _service.disposeSingle();
-          await _service.playMulti(sound.id, sound.assetPath);
-        }
+        await _handleMixingMode(oldState, sound);
       } else if (newState is AudioIdle) {
-        // Last mixer sound was removed
-        if (oldState is AudioMixing) await _service.stopMulti(sound.id);
-        if (oldState is AudioSingle) await _service.stopSingle();
+        await _handleIdleMode(oldState, sound);
       }
     } catch (e) {
       state = oldState;
       print('AudioNotifier Error: $e');
     }
+  }
+
+  Future<void> _handleSingleMode(
+    AudioState oldState,
+    AudioSingle newState,
+    SoundItem sound,
+  ) async {
+    final isNewSound =
+        oldState is! AudioSingle || oldState.singleSound.sound.id != sound.id;
+
+    if (isNewSound) {
+      if (oldState is AudioSingle) await _service.disposeSingle();
+      if (oldState is AudioMixing) await _service.disposeAllMulti();
+      await _service.playSingle(sound.id, sound.assetPath);
+    } else if (newState.singleSound.playbackState == PlaybackState.playing) {
+      await _service.resumeSingle();
+    } else {
+      await _service.pauseSingle();
+    }
+  }
+
+  Future<void> _handleMixingMode(AudioState oldState, SoundItem sound) async {
+    final soundRemovedFromMixer =
+        oldState is AudioMixing && oldState.mixerSounds.containsKey(sound.id);
+
+    if (soundRemovedFromMixer) {
+      await _service.stopMulti(sound.id);
+    } else {
+      if (oldState is AudioSingle) await _service.disposeSingle();
+      await _service.playMulti(sound.id, sound.assetPath);
+    }
+  }
+
+  Future<void> _handleIdleMode(AudioState oldState, SoundItem sound) async {
+    if (oldState is AudioMixing) await _service.stopMulti(sound.id);
+    if (oldState is AudioSingle) await _service.stopSingle();
   }
 
   Future<void> setMode(AudioMode mode) async {
