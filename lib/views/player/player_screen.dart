@@ -83,7 +83,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
     _audioNotifier = ref.read(audioProvider.notifier);
-    // Get _isPlaying for the first time safely
+
     final isPlaying = ref.watch(
       audioProvider.select(
         (s) => s.currentSingle?.playbackState == PlaybackState.playing,
@@ -112,7 +112,9 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   // ── Playback actions ───────────────────────────────────────────────────────
 
   void _togglePlay(bool isPlaying) async {
-    await _audioNotifier?.handleToggleSound();
+    final currentSound = ref.read(audioProvider).currentSingle;
+    if (currentSound == null) return;
+    await _audioNotifier?.handleToggleSound(currentSound.sound);
     if (!isPlaying) {
       // Starting playback
       _pulseCtrl.repeat(reverse: true);

@@ -7,153 +7,80 @@ import 'package:lull/services/player_service.dart';
 
 class AudioNotifier extends StateNotifier<AudioState> {
   final AudioPlayerService _service;
+  AudioMode _mode = AudioMode.single;
 
   AudioNotifier({required AudioPlayerService service})
     : _service = service,
       super(AudioIdle());
 
-  Future<void> handleToggleSound() async {
-    if (state.currentSingle == null) return;
+  /// Optimistic toggle: state updates immediately for responsive UI,
+  /// then service calls are made. On error the old state is restored.
+  Future<void> handleToggleSound(SoundItem sound) async {
+    final oldState = state;
+    final newState = oldState.toggle(sound, _mode);
 
-    final currentSound = state.currentSingle?.sound;
+    state = newState;
 
-    if (state is AudioIdle || state is AudioSingle) {
-      return await handlePlaySingle(currentSound!);
-    }
+    try {
+      if (newState is AudioSingle) {
+        final isNewSound =
+            oldState is! AudioSingle ||
+            oldState.singleSound.sound.id != sound.id;
 
-    if (state is AudioMixing) {
-      return await handlePlayMixer(currentSound!);
-    }
-  }
+        if (isNewSound) {
+          if (oldState is AudioSingle) await _service.disposeSingle();
+          if (oldState is AudioMixing) await _service.disposeAllMulti();
+          await _service.playSingle(sound.id, sound.assetPath);
+        } else if (newState.singleSound.playbackState == PlaybackState.playing) {
+          await _service.resumeSingle();
+        } else {
+          await _service.pauseSingle();
+        }
+      } else if (newState is AudioMixing) {
+        final soundRemovedFromMixer =
+            oldState is AudioMixing && oldState.mixerSounds.containsKey(sound.id);
 
-  Future<void> handlePlaySingle(SoundItem sound) async {
-    if (state is AudioSingle) {
-      final current = state as AudioSingle;
-
-      final isSame = current.singleSound.sound.id == sound.id;
-
-      if (!isSame) {
-        await _service.disposeAllMulti();
-
-        final next = AudioSingle(
-          singleSound: AudioItemState(
-            volume: 0.5,
-            playbackState: PlaybackState.playing,
-            sound: sound,
-          ),
-        );
-
-        state = next;
-        await _service.playSingle(sound.id, sound.assetPath);
-        return;
+        if (soundRemovedFromMixer) {
+          await _service.stopMulti(sound.id);
+        } else {
+          if (oldState is AudioSingle) await _service.disposeSingle();
+          await _service.playMulti(sound.id, sound.assetPath);
+        }
+      } else if (newState is AudioIdle) {
+        // Last mixer sound was removed
+        if (oldState is AudioMixing) await _service.stopMulti(sound.id);
+        if (oldState is AudioSingle) await _service.stopSingle();
       }
-
-      final next = current.toggle();
-      state = next;
-
-      if (next.singleSound.playbackState == PlaybackState.playing) {
-        await _service.resumeSingle();
-      } else {
-        await _service.pauseSingle();
-      }
-
-      return;
-    }
-
-    // idle / mixing
-    await _service.disposeAllMulti();
-
-    final next = AudioSingle(
-      singleSound: AudioItemState(
-        volume: 0.5,
-        playbackState: PlaybackState.playing,
-        sound: sound,
-      ),
-    );
-
-    state = next;
-    await _service.playSingle(sound.id, sound.assetPath);
-  }
-
-  Future<void> handlePlayMixer(SoundItem sound) async {
-    if (state is! AudioMixing) return;
-
-    final Map<String, AudioItemState> mapSounds =
-        (state as AudioMixing).mixerSounds;
-    final hasSound = mapSounds.containsKey(sound.id);
-
-    if (!hasSound) {
-      // Stop single if moving to mixer
-      await _service.disposeSingle();
-
-      mapSounds[sound.id] = AudioItemState(
-        sound: sound,
-        volume: 0.5,
-        playbackState: PlaybackState.playing,
-      );
-
-      await _service.playMulti(sound.id, sound.assetPath);
-      return;
-    }
-
-    final currentSound = mapSounds[sound.id];
-    if (currentSound == null) return;
-
-    // Toggle playback state
-    final isPlaying = currentSound.playbackState == PlaybackState.playing;
-    final newPlaybackState = isPlaying
-        ? PlaybackState.paused
-        : PlaybackState.playing;
-
-    mapSounds[sound.id] = currentSound.copyWith(
-      playbackState: newPlaybackState,
-    );
-
-    state = AudioMixing(mixerSounds: mapSounds);
-
-    if (isPlaying) {
-      await _service.stopMulti(currentSound.sound.id);
-    } else {
-      await _service.resumeMulti(currentSound.sound.id);
+    } catch (e) {
+      state = oldState;
+      print('AudioNotifier Error: $e');
     }
   }
 
-  Future<void> _stopSound() async {
-    if (state is AudioSingle) {
-      await _service.stopSingle();
-    } else {
-      await _service.stopAllMulti();
-    }
+  Future<void> setMode(AudioMode mode) async {
+    _mode = mode;
+    state = AudioIdle();
+    await _service.stopAll();
   }
 
   void setVolume(AudioItemState soundItemState, double v) {
     if (state is AudioMixing) {
-      // Update only the passed-in sound in a new map, do not read back from state
       final currentMap = Map<String, AudioItemState>.from(
         (state as AudioMixing).mixerSounds,
       );
       currentMap[soundItemState.sound.id] = soundItemState.copyWith(volume: v);
       state = AudioMixing(mixerSounds: currentMap);
-
       _service.setMultiVolume(soundItemState.sound.id, v);
     } else if (state is AudioSingle) {
-      // Just update with the passed soundItemState
       state = (state as AudioSingle).copyWith(
         singleSound: soundItemState.copyWith(volume: v),
       );
-
       _service.setSingleVolume(v);
     }
   }
 
-  void stopAll() {
-    _service.stopAll();
-    state = AudioIdle();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+  Future<void> stopAll() async {
+    state = await state.stop(_service);
   }
 }
 

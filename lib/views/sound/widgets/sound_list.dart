@@ -29,7 +29,6 @@ class SoundList extends ConsumerWidget {
         ),
       );
     } else if (soundState is SoundLoaded) {
-      final soundList = soundState.sounds;
       return SliverPadding(
         padding: const EdgeInsets.fromLTRB(
           DesignTokens.spacing6,
@@ -39,27 +38,38 @@ class SoundList extends ConsumerWidget {
         ),
         sliver: SliverToBoxAdapter(
           child: Column(
-            children: soundList
-                .map<Widget>((sound) => soundItem(sound, ref))
+            children: soundState.sounds
+                .map<Widget>((sound) => _SoundListItem(sound: sound))
                 .toList(),
           ),
         ),
       );
-    } else {
-      // fallback if needed
-      return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
-  }
 
-  Widget soundItem(SoundItem sound, WidgetRef ref) {
+    return const SliverToBoxAdapter(child: SizedBox.shrink());
+  }
+}
+
+/// Each item is its own [ConsumerWidget] so only the tapped sound rebuilds
+/// when audio state changes — not the entire list.
+class _SoundListItem extends ConsumerWidget {
+  const _SoundListItem({required this.sound});
+
+  final SoundItem sound;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final color = colorForCategory(sound);
-    final audioNotifier = ref.read(audioProvider.notifier);
+
     final isPlaying = ref.watch(
-      audioProvider.select(
-        (s) =>
-            s.currentSingle?.sound.id == sound.id &&
-            s.currentSingle?.playbackState == PlaybackState.playing,
-      ),
+      audioProvider.select((s) {
+        if (s is AudioMixing) {
+          return s.mixerSounds[sound.id]?.playbackState ==
+              PlaybackState.playing;
+        }
+        return s.currentSingle?.sound.id == sound.id &&
+            s.currentSingle?.playbackState == PlaybackState.playing;
+      }),
     );
 
     return Container(
@@ -67,12 +77,8 @@ class SoundList extends ConsumerWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(DesignTokens.radiusXl),
         color: AppColors.primaryContainer.withValues(alpha: 0.08),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0x22000000),
-            blurRadius: 14,
-            offset: Offset(0, 6),
-          ),
+        boxShadow: const [
+          BoxShadow(color: Color(0x22000000), blurRadius: 14, offset: Offset(0, 6)),
         ],
       ),
       padding: const EdgeInsets.symmetric(
@@ -82,25 +88,17 @@ class SoundList extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Icon category (left)
           Container(
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(DesignTokens.radiusLg),
             ),
             padding: const EdgeInsets.all(DesignTokens.spacing4),
-            child: Icon(
-              iconForCategory(sound),
-              size: DesignTokens.iconLg,
-              color: color,
-            ),
+            child: Icon(iconForCategory(sound), size: DesignTokens.iconLg, color: color),
           ),
-          // Sound name (centered, expanded)
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: DesignTokens.spacing3,
-              ), // 14
+              padding: const EdgeInsets.symmetric(horizontal: DesignTokens.spacing3),
               child: Column(
                 children: [
                   Text(
@@ -131,19 +129,16 @@ class SoundList extends ConsumerWidget {
           ),
           PlayerButton(
             isPlaying: isPlaying,
-            onTogglePlay: () => audioNotifier.handlePlaySingle(sound),
+            onTogglePlay: () => ref.read(audioProvider.notifier).handleToggleSound(sound),
             glowAlpha: 0,
-            size: DesignTokens.iconXl, // 48
-            iconSize: DesignTokens.iconMd, // 24
+            size: DesignTokens.iconXl,
+            iconSize: DesignTokens.iconMd,
           ),
           const SizedBox(width: DesignTokens.spacing1),
           IconButton(
-            icon: const Icon(
-              Icons.more_vert_rounded,
-              size: DesignTokens.iconLg,
-            ),
+            icon: const Icon(Icons.more_vert_rounded, size: DesignTokens.iconLg),
             onPressed: () {},
-            splashRadius: DesignTokens.radiusLg, // 22
+            splashRadius: DesignTokens.radiusLg,
           ),
         ],
       ),
