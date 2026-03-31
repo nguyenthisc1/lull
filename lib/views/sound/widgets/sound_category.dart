@@ -61,7 +61,11 @@ class SoundCategoryWidget extends ConsumerWidget {
                 ),
                 child: Text(
                   l10n.soundCategoryAll,
-                  style: AppTypography.labelLarge,
+                  style: AppTypography.labelLarge.copyWith(
+                    color: selectedCategory == null
+                        ? Colors.black
+                        : Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(width: DesignTokens.spacing3),
@@ -97,7 +101,9 @@ class SoundCategoryWidget extends ConsumerWidget {
                     ),
                     child: Text(
                       categoryLabel(category, l10n),
-                      style: AppTypography.labelLarge,
+                      style: AppTypography.labelLarge.copyWith(
+                        color: isSelected ? Colors.black : Colors.white,
+                      ),
                     ),
                   ),
                 );
