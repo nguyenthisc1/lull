@@ -39,7 +39,7 @@ class SoundMixer extends ConsumerWidget {
                 children: [
                   SoundVolumeRow(
                     sound: soundItemState.sound,
-                    volume: soundItemState.volume,
+                    volume: soundItemState.volume!,
                     onChanged: (v) {
                       ref
                           .read(audioProvider.notifier)

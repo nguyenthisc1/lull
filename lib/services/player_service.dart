@@ -84,16 +84,16 @@ class AudioPlayerService {
 
   /// Stops and disposes all multi players.
   Future<void> disposeAllMulti() async {
-    if (_multiPlayers.isNotEmpty) {
-      for (var player in _multiPlayers.values) {
-        await player.dispose();
-      }
+    for (var player in _multiPlayers.values) {
+      await player.dispose();
     }
+    _multiPlayers.clear();
   }
 
   Future<void> disposeSingle() async {
     if (_singlePlayer != null) {
       await _singlePlayer!.dispose();
+      _singlePlayer = null;
     }
   }
 
