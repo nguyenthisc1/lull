@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
-import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/shared/l10n/app_localizations.dart';
 import 'package:lull/models/sound_model.dart';
 import 'package:lull/providers/sound_provider.dart';
 import 'package:lull/shared/utils/utils.dart';
