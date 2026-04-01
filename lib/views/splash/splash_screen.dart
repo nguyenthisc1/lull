@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/shared/l10n/app_localizations.dart';
 import 'package:lull/shared/widgets/languages_button.dart';
 
 import '../../core/constants/design_tokens.dart';

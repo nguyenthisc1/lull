@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
-import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/shared/l10n/app_localizations.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/views/sound/widgets/search_bar.dart';
 import 'package:lull/views/sound/widgets/sound_header.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lull/core/router/app_routes.dart';
-import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/shared/l10n/app_localizations.dart';
 import 'package:lull/shared/widgets/navbar.dart';
 
 /// Root shell for the [StatefulShellRoute].

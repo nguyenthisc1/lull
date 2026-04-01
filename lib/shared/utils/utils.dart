@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/shared/l10n/app_localizations.dart';
 import 'package:lull/models/sound_model.dart';
 
 IconData iconForCategory(SoundItem sound) {

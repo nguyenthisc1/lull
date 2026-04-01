@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
-import 'package:lull/l10n/app_localizations.dart';
+import 'package:lull/shared/l10n/app_localizations.dart';
 import 'package:lull/providers/locale_provider.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 

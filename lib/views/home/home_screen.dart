@@ -7,7 +7,7 @@ import 'package:lull/shared/widgets/searchbar.dart';
 import '../../core/constants/design_tokens.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
-import '../../l10n/app_localizations.dart';
+import '../../shared/l10n/app_localizations.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

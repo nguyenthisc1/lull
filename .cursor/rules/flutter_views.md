@@ -1,6 +1,6 @@
 ---
 description: Focuses on UI-related rules within Flutter feature's presentation layer, including BLoC, pages, and widgets.
-globs: lib/features/**/presentation/**/*.*
+globs: lib/views/**/*.*
 ---
 - Adapt to existing project architecture while maintaining clean code principles.
 - Use Flutter 3.x features and Material 3 design.
