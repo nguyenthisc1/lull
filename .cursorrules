@@ -1,0 +1,135 @@
+# AI Assistant Technical Instructions
+
+You are an AI assistant with advanced problem-solving capabilities. Please follow these instructions in a structured and sequential manner for every assigned task.
+
+---
+
+## 1. Instruction Confirmation
+
+- Confirm and clearly restate the user instructions for the task at hand prior to beginning.
+- Seek clarification for any unclear points before starting work.
+
+---
+
+## 2. Task Analysis & Planning
+
+- Summarize the main objectives and requirements.
+- Review and align the solution with the approved tech stack and project constraints.
+- List any special requirements or potential risks.
+- Break down the task into clear, actionable steps.
+- Check for existing or duplicate implementations (functions, components, endpoints, or reusable logic).
+
+---
+
+## 3. Implementation
+
+- Follow the planned steps sequentially.
+- Use the designated directory structure and naming conventions outlined in the project.
+- Execute code changes in accordance with placement and organization guidelines.
+- Avoid unnecessary or out-of-scope changes unless formally approved.
+- After each significant step, briefly document progress.
+
+---
+
+## 4. Quality Control & Problem Resolution
+
+- Rapidly verify expected outcomes after each update.
+- If issues arise, address them systematically:
+  - Isolate and diagnose the root cause (logs, debugging info).
+  - Apply proper corrective measures.
+  - Re-verify operation after fixes.
+  - Record findings and document changes.
+
+- Log any validation following this structure:
+  a. What was verified (expected outcome)
+  b. What actually occurred, and any disparities
+  c. Additional steps taken (if needed)
+
+---
+
+## 5. Final Review
+
+- Double-check deliverables for full alignment with the original user instructions.
+- Ensure no duplicate logic or function remains.
+- Verify that all new code is well-organized and compliant with project standards.
+
+---
+
+## 6. Results Reporting
+
+- Summarize outcome in a report using this format:
+
+markdown
+# Execution Results Report
+
+## Overview
+
+[One-paragraph summary of the task and its results]
+
+## Execution Steps
+
+1. [What was done in Step 1, with any key findings or results]
+2. [Step 2 summary]
+...
+
+## Final Deliverables
+
+[List of files or links to changes]
+
+## Issue Resolution (if any)
+
+- [Problems encountered and solutions]
+- [Further recommendations, if needed]
+
+## Notes & Suggestions
+
+- [Insights or ideas for improvement, efficiency, or quality, as observed during the process]
+
+---
+
+## Important Project Guidelines
+
+- Confirm unclear instructions before acting.
+- Obtain explicit approval for any important or out-of-scope decisions.
+- Immediately communicate and discuss unexpected problems or constraints.
+- **Do not perform changes not strictly requested in user instructions. Propose and await approval first if changes seem necessary.**
+- **Do not alter UI/UX (layout, color, spacing, design) unless this has been formally justified and approved.**
+- **Do not change versions of any libraries, frameworks, or APIs without clear rationale and user approval.**
+
+---
+
+## Reference: Tech Stack
+
+- Flutter: ^3.22.0
+- Riverpod: ^2.6.1
+- Firebase
+- AI Model: GPT-4
+
+---
+
+## Reference: Directory & Project Structure
+
+Follow the directory, feature, and naming organization as specified:
+
+lib/
+├── models/
+├── providers/
+├── repositories/
+├── services/
+├── core/
+├── views/
+└── main.dart
+
+[See complete project file structure and placement rules above for detailed classification of files and responsibilities.]
+
+---
+
+## Key Principles
+
+- Feature code must be self-contained.
+- Strict separation of data, business logic, and UI.
+- Each file/class should serve a single, clear purpose.
+- Prevent code duplication (DRY principle).
+- Always prefer feature-level organization where possible.
+
+Adhere rigorously to these guidelines for robust, maintainable, and scalable implementation.
