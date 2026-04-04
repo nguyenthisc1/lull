@@ -72,13 +72,19 @@ class _SoundListItem extends ConsumerWidget {
       }),
     );
 
+    final audioNotifier = ref.read(audioProvider.notifier);
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: DesignTokens.spacing2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(DesignTokens.radiusXl),
         color: AppColors.primaryContainer.withValues(alpha: 0.08),
         boxShadow: const [
-          BoxShadow(color: Color(0x22000000), blurRadius: 14, offset: Offset(0, 6)),
+          BoxShadow(
+            color: Color(0x22000000),
+            blurRadius: 14,
+            offset: Offset(0, 6),
+          ),
         ],
       ),
       padding: const EdgeInsets.symmetric(
@@ -94,11 +100,17 @@ class _SoundListItem extends ConsumerWidget {
               borderRadius: BorderRadius.circular(DesignTokens.radiusLg),
             ),
             padding: const EdgeInsets.all(DesignTokens.spacing4),
-            child: Icon(iconForCategory(sound), size: DesignTokens.iconLg, color: color),
+            child: Icon(
+              iconForCategory(sound),
+              size: DesignTokens.iconLg,
+              color: color,
+            ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: DesignTokens.spacing3),
+              padding: const EdgeInsets.symmetric(
+                horizontal: DesignTokens.spacing3,
+              ),
               child: Column(
                 children: [
                   Text(
@@ -129,14 +141,17 @@ class _SoundListItem extends ConsumerWidget {
           ),
           PlayerButton(
             isPlaying: isPlaying,
-            onTogglePlay: () => ref.read(audioProvider.notifier).handleToggleSound(sound),
+            onTogglePlay: () => audioNotifier.handleToggleSound(sound),
             glowAlpha: 0,
             size: DesignTokens.iconXl,
             iconSize: DesignTokens.iconMd,
           ),
           const SizedBox(width: DesignTokens.spacing1),
           IconButton(
-            icon: const Icon(Icons.more_vert_rounded, size: DesignTokens.iconLg),
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              size: DesignTokens.iconLg,
+            ),
             onPressed: () {},
             splashRadius: DesignTokens.radiusLg,
           ),

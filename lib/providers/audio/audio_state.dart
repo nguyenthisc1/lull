@@ -4,8 +4,6 @@ import 'package:lull/services/player_service.dart';
 
 enum PlaybackState { idle, playing, paused }
 
-enum AudioMode { single, mixing }
-
 class AudioItemState extends Equatable {
   final SoundItem sound;
   final double? volume;
@@ -37,9 +35,7 @@ sealed class AudioState extends Equatable {
   List<AudioItemState> get sounds;
   AudioItemState? get currentSingle;
 
-  /// Returns the next state synchronously with no side-effects (optimistic).
-  /// All service calls are handled by AudioNotifier.
-  AudioState toggle(SoundItem sound, AudioMode mode);
+  AudioState toggle(SoundItem sound);
 
   Future<AudioState> stop(AudioPlayerService service);
 
@@ -57,18 +53,8 @@ class AudioIdle extends AudioState {
   AudioItemState? get currentSingle => null;
 
   @override
-  AudioState toggle(SoundItem sound, AudioMode mode) {
-    if (mode == AudioMode.mixing) {
-      return AudioMixing(
-        mixerSounds: {
-          sound.id: AudioItemState(
-            sound: sound,
-            playbackState: PlaybackState.playing,
-            volume: 0.5,
-          ),
-        },
-      );
-    }
+  AudioState toggle(SoundItem sound) {
+    // Always return single mode by default, since 'mode' is removed.
     return AudioSingle(
       singleSound: AudioItemState(
         sound: sound,
@@ -108,7 +94,7 @@ class AudioMixing extends AudioState {
   AudioItemState? get currentSingle => null;
 
   @override
-  AudioState toggle(SoundItem sound, AudioMode mode) {
+  AudioState toggle(SoundItem sound) {
     final updated = Map<String, AudioItemState>.from(mixerSounds);
 
     if (mixerSounds.containsKey(sound.id)) {
@@ -150,7 +136,7 @@ class AudioSingle extends AudioState {
   AudioItemState? get currentSingle => singleSound;
 
   @override
-  AudioState toggle(SoundItem sound, AudioMode mode) {
+  AudioState toggle(SoundItem sound) {
     if (singleSound.sound.id != sound.id) {
       return AudioSingle(
         singleSound: AudioItemState(
