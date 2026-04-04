@@ -6,6 +6,7 @@ class ControlButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.onTap,
+    this.onLongPress,
     required this.size,
     required this.iconSize,
     required this.color,
@@ -14,6 +15,7 @@ class ControlButton extends StatelessWidget {
 
   final IconData icon;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
   final double size;
   final double iconSize;
   final Color color;
@@ -23,6 +25,7 @@ class ControlButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
         width: size,
         height: size,

@@ -8,6 +8,7 @@ class PlayerButton extends StatelessWidget {
     required this.isPlaying,
     this.glowAlpha,
     required this.onTogglePlay,
+    this.onLongPress,
     this.size = 72,
     this.iconSize = 36,
     this.glowBlurRadius = 32,
@@ -17,6 +18,7 @@ class PlayerButton extends StatelessWidget {
   final bool isPlaying;
   final double? glowAlpha;
   final VoidCallback onTogglePlay;
+  final VoidCallback? onLongPress;
 
   /// Diameter of the button.
   final double size;
@@ -49,6 +51,7 @@ class PlayerButton extends StatelessWidget {
       child: ControlButton(
         icon: isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
         onTap: onTogglePlay,
+        onLongPress: onLongPress,
         size: size,
         iconSize: iconSize,
         color: AppColors.onPrimary,
