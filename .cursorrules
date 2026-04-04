@@ -132,4 +132,10 @@ lib/
 - Prevent code duplication (DRY principle).
 - Always prefer feature-level organization where possible.
 
+- Make use of design tokens for all design-related values such as spacing, colors, border radius, typography, icons, and animation durations, by referencing them via `DesignTokens`, `AppColors`, `AppTypography`, or other constants from the `core/constants` and `core/theme` directories.
+- Always favor referencing design tokens over hardcoded values for visual consistency and maintainability.
+- If introducing new design values, define them in the corresponding design token or theme file, do not hardcode in feature/UI code.
+- Ensure that new or changed widgets/styles reference design tokens for padding, margin, color, typography, radius, shadows, elevation, and icon sizes.
+- Use only the approved design system and constants for any visual or layout styling decisions.
+
 Adhere rigorously to these guidelines for robust, maintainable, and scalable implementation.
