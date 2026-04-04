@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/providers/audio/audio_provider.dart';
-import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/views/player/widgets/player_header.dart';
 import 'package:lull/views/player/widgets/player_title.dart';
@@ -85,9 +84,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     _audioNotifier = ref.read(audioProvider.notifier);
 
     final isPlaying = ref.watch(
-      audioProvider.select(
-        (s) => s.currentSingle?.playbackState == PlaybackState.playing,
-      ),
+      audioProvider.select((s) => s.isAnyPlaying),
     );
     _updateSleepTimerTicker(isPlaying);
     _lastIsPlaying = isPlaying;
@@ -112,9 +109,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   // ── Playback actions ───────────────────────────────────────────────────────
 
   void _togglePlay(bool isPlaying) async {
-    final currentSound = ref.read(audioProvider).currentSingle;
-    if (currentSound == null) return;
-    await _audioNotifier?.handleToggleSound(currentSound.sound);
+    await _audioNotifier?.togglePlayAll();
     if (!isPlaying) {
       // Starting playback
       _pulseCtrl.repeat(reverse: true);
@@ -161,9 +156,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.paddingOf(context).top;
     final isPlaying = ref.watch(
-      audioProvider.select(
-        (s) => s.currentSingle?.playbackState == PlaybackState.playing,
-      ),
+      audioProvider.select((s) => s.isAnyPlaying),
     );
     _lastIsPlaying = isPlaying; // Sync last known
 

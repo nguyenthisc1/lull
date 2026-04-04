@@ -4,6 +4,7 @@ import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
 import 'package:lull/providers/audio/audio_provider.dart';
+import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/shared/widgets/glass_container.dart';
 
 class PlayerHeader extends ConsumerWidget {
@@ -14,6 +15,7 @@ class PlayerHeader extends ConsumerWidget {
     final soundCount = ref.watch(
       audioProvider.select((s) => s.sounds.length),
     );
+    final mode = ref.watch(audioModeProvider);
 
     return Row(
       children: [
@@ -28,8 +30,11 @@ class PlayerHeader extends ConsumerWidget {
                   color: AppColors.primary.withValues(alpha: 0.70),
                 ),
               ),
-              const SizedBox(height: 4),
-              Text('Sound Mix', style: AppTypography.headlineSmall),
+              const SizedBox(height: DesignTokens.spacing1),
+              Text(
+                mode == AudioMode.mixing ? 'Sound Mix' : 'Single',
+                style: AppTypography.headlineSmall,
+              ),
             ],
           ),
         ),
@@ -40,11 +45,13 @@ class PlayerHeader extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                Icons.music_note_rounded,
+                mode == AudioMode.mixing
+                    ? Icons.queue_music_rounded
+                    : Icons.music_note_rounded,
                 size: DesignTokens.iconSm,
                 color: AppColors.primary,
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: DesignTokens.spacing1),
               Text(
                 '$soundCount ${soundCount == 1 ? 'sound' : 'sounds'}',
                 style: AppTypography.labelMedium.copyWith(

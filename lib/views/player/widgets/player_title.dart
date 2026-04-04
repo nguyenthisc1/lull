@@ -4,7 +4,6 @@ import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
 import 'package:lull/providers/audio/audio_provider.dart';
-import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/shared/utils/utils.dart';
 
 class PlayerTitle extends ConsumerStatefulWidget {
@@ -43,9 +42,7 @@ class _PlayerTitleState extends ConsumerState<PlayerTitle>
   @override
   Widget build(BuildContext context) {
     final isPlaying = ref.watch(
-      audioProvider.select(
-        (s) => s.currentSingle?.playbackState == PlaybackState.playing,
-      ),
+      audioProvider.select((s) => s.isAnyPlaying),
     );
 
     final currentSound = ref.watch(

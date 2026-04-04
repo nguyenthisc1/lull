@@ -4,6 +4,8 @@ import 'package:lull/services/player_service.dart';
 
 enum PlaybackState { idle, playing, paused }
 
+enum AudioMode { single, mixing }
+
 class AudioItemState extends Equatable {
   final SoundItem sound;
   final double? volume;
@@ -35,7 +37,11 @@ sealed class AudioState extends Equatable {
   List<AudioItemState> get sounds;
   AudioItemState? get currentSingle;
 
-  AudioState toggle(SoundItem sound);
+  /// Whether any sound is actively playing (works for both modes).
+  bool get isAnyPlaying;
+
+  /// Pure state transition — no side-effects. Service calls are in AudioNotifier.
+  AudioState toggle(SoundItem sound, AudioMode mode);
 
   Future<AudioState> stop(AudioPlayerService service);
 
@@ -53,8 +59,21 @@ class AudioIdle extends AudioState {
   AudioItemState? get currentSingle => null;
 
   @override
-  AudioState toggle(SoundItem sound) {
-    // Always return single mode by default, since 'mode' is removed.
+  bool get isAnyPlaying => false;
+
+  @override
+  AudioState toggle(SoundItem sound, AudioMode mode) {
+    if (mode == AudioMode.mixing) {
+      return AudioMixing(
+        mixerSounds: {
+          sound.id: AudioItemState(
+            sound: sound,
+            playbackState: PlaybackState.playing,
+            volume: 0.5,
+          ),
+        },
+      );
+    }
     return AudioSingle(
       singleSound: AudioItemState(
         sound: sound,
@@ -94,7 +113,11 @@ class AudioMixing extends AudioState {
   AudioItemState? get currentSingle => null;
 
   @override
-  AudioState toggle(SoundItem sound) {
+  bool get isAnyPlaying =>
+      mixerSounds.values.any((s) => s.playbackState == PlaybackState.playing);
+
+  @override
+  AudioState toggle(SoundItem sound, AudioMode mode) {
     final updated = Map<String, AudioItemState>.from(mixerSounds);
 
     if (mixerSounds.containsKey(sound.id)) {
@@ -136,7 +159,10 @@ class AudioSingle extends AudioState {
   AudioItemState? get currentSingle => singleSound;
 
   @override
-  AudioState toggle(SoundItem sound) {
+  bool get isAnyPlaying => singleSound.playbackState == PlaybackState.playing;
+
+  @override
+  AudioState toggle(SoundItem sound, AudioMode mode) {
     if (singleSound.sound.id != sound.id) {
       return AudioSingle(
         singleSound: AudioItemState(
