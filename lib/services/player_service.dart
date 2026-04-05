@@ -2,11 +2,27 @@
 
 import 'package:just_audio/just_audio.dart';
 
-class AudioPlayerService {
+abstract class AudioPlayerService {
+  Future<void> resumeMulti(String id);
+  Future<void> resumeSingle();
+  Future<void> playMulti(String id, String assetPath, {double volume = 0.5});
+  Future<void> playSingle(String id, String assetPath, {double volume = 0.5});
+  Future<void> stopMulti(String id);
+  Future<void> stopAllMulti();
+  Future<void> disposeAllMulti();
+  Future<void> disposeSingle();
+  Future<void> pauseSingle();
+  Future<void> stopSingle();
+  void setMultiVolume(String id, double volume);
+  void setSingleVolume(double volume);
+  Future<void> stopAll();
+}
+
+class AudioPlayerServiceImpl implements AudioPlayerService {
   final Map<String, AudioPlayer> _multiPlayers = {};
   AudioPlayer? _singlePlayer;
 
-  /// Resume a multi player (not start from beginning, but resumes playback).
+  @override
   Future<void> resumeMulti(String id) async {
     final player = _multiPlayers[id];
     if (player != null && player.playing == false) {
@@ -14,6 +30,7 @@ class AudioPlayerService {
     }
   }
 
+  @override
   Future<void> resumeSingle() async {
     final player = _singlePlayer;
     if (player != null && player.playing == false) {
@@ -21,7 +38,7 @@ class AudioPlayerService {
     }
   }
 
-  /// Start a multi player sound, or resumes it if already loaded.
+  @override
   Future<void> playMulti(
     String id,
     String assetPath, {
@@ -42,11 +59,11 @@ class AudioPlayerService {
         await player.dispose();
         _multiPlayers.remove(id);
       }
-      print("AudioPlayerService (playMulti): $e");
+      print("AudioPlayerServiceImpl (playMulti): $e");
     }
   }
 
-  /// Start a single player sound, replacing any active single player.
+  @override
   Future<void> playSingle(
     String id,
     String assetPath, {
@@ -63,11 +80,11 @@ class AudioPlayerService {
     } catch (e) {
       await _singlePlayer?.dispose();
       _singlePlayer = null;
-      print("AudioPlayerService (playSingle): $e");
+      print("AudioPlayerServiceImpl (playSingle): $e");
     }
   }
 
-  /// Stop a single multi track by id.
+  @override
   Future<void> stopMulti(String id) async {
     final player = _multiPlayers[id];
     if (player != null) {
@@ -75,14 +92,14 @@ class AudioPlayerService {
     }
   }
 
-  /// Stops all multi players, but does not dispose of them.
+  @override
   Future<void> stopAllMulti() async {
     for (var player in _multiPlayers.values) {
       await player.stop();
     }
   }
 
-  /// Stops and disposes all multi players.
+  @override
   Future<void> disposeAllMulti() async {
     for (var player in _multiPlayers.values) {
       await player.dispose();
@@ -90,6 +107,7 @@ class AudioPlayerService {
     _multiPlayers.clear();
   }
 
+  @override
   Future<void> disposeSingle() async {
     if (_singlePlayer != null) {
       await _singlePlayer!.dispose();
@@ -97,26 +115,27 @@ class AudioPlayerService {
     }
   }
 
-  /// Stop and pause the single player.
+  @override
   Future<void> pauseSingle() async {
     await _singlePlayer?.pause();
   }
 
+  @override
   Future<void> stopSingle() async {
     await _singlePlayer?.stop();
   }
 
-  /// Set volume for a specific multi player (by id).
+  @override
   void setMultiVolume(String id, double volume) {
     _multiPlayers[id]?.setVolume(volume);
   }
 
-  /// Set volume for the single player.
+  @override
   void setSingleVolume(double volume) {
     _singlePlayer?.setVolume(volume);
   }
 
-  /// Stop and dispose ALL players (both multi and single).
+  @override
   Future<void> stopAll() async {
     await disposeAllMulti();
     await stopSingle();

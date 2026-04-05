@@ -5,9 +5,6 @@ import 'package:lull/models/sound_model.dart';
 import 'package:lull/providers/audio/audio_state.dart';
 import 'package:lull/services/player_service.dart';
 
-/// Observable mode — updated automatically by add/remove logic.
-final audioModeProvider = StateProvider<AudioMode>((ref) => AudioMode.single);
-
 class AudioNotifier extends StateNotifier<AudioState> {
   final AudioPlayerService _service;
   final Ref _ref;
@@ -249,7 +246,17 @@ class AudioNotifier extends StateNotifier<AudioState> {
   }
 }
 
+/// Observable mode — updated automatically by add/remove logic.
+final audioModeProvider = StateProvider<AudioMode>((ref) => AudioMode.single);
+
+final audioServiceProvider = Provider<AudioPlayerService>((ref) {
+  return AudioPlayerServiceImpl();
+});
+
 final audioProvider = StateNotifierProvider<AudioNotifier, AudioState>((ref) {
   ref.keepAlive();
-  return AudioNotifier(service: AudioPlayerService(), ref: ref);
+
+  final service = ref.watch(audioServiceProvider);
+
+  return AudioNotifier(service: service, ref: ref);
 });
