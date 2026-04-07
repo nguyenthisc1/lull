@@ -2,37 +2,43 @@
 
 import 'package:just_audio/just_audio.dart';
 
-abstract class AudioPlayerService {
+/// Interface for audio mixing (multiple parallel sounds)
+abstract class AudioPlayerMixingService {
   Future<void> resumeMulti(String id);
-  Future<void> resumeSingle();
   Future<void> playMulti(String id, String assetPath, {double volume = 0.5});
-  Future<void> playSingle(String id, String assetPath, {double volume = 0.5});
   Future<void> stopMulti(String id);
   Future<void> stopAllMulti();
   Future<void> disposeAllMulti();
+  void setMultiVolume(String id, double volume);
+}
+
+/// Interface for audio single-playback (single sound)
+abstract class AudioPlayerSingleService {
+  Future<void> resumeSingle();
+  Future<void> playSingle(String id, String assetPath, {double volume = 0.5});
   Future<void> disposeSingle();
   Future<void> pauseSingle();
   Future<void> stopSingle();
-  void setMultiVolume(String id, double volume);
   void setSingleVolume(double volume);
+}
+
+/// High-level interface for combined player service
+abstract class AudioPlayerService
+    implements AudioPlayerMixingService, AudioPlayerSingleService {
+  /// Stop all single and multi players
   Future<void> stopAll();
 }
 
+/// Implementation of the combined player service
 class AudioPlayerServiceImpl implements AudioPlayerService {
   final Map<String, AudioPlayer> _multiPlayers = {};
   AudioPlayer? _singlePlayer;
 
+  // ── Mixing (multi) methods ──
+
   @override
   Future<void> resumeMulti(String id) async {
     final player = _multiPlayers[id];
-    if (player != null && player.playing == false) {
-      await player.play();
-    }
-  }
-
-  @override
-  Future<void> resumeSingle() async {
-    final player = _singlePlayer;
     if (player != null && player.playing == false) {
       await player.play();
     }
@@ -64,27 +70,6 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   }
 
   @override
-  Future<void> playSingle(
-    String id,
-    String assetPath, {
-    double volume = 0.5,
-  }) async {
-    try {
-      _singlePlayer ??= AudioPlayer();
-
-      await _singlePlayer!.setAsset(assetPath);
-      await _singlePlayer!.setLoopMode(LoopMode.all);
-      await _singlePlayer!.setVolume(volume);
-
-      await _singlePlayer!.play();
-    } catch (e) {
-      await _singlePlayer?.dispose();
-      _singlePlayer = null;
-      print("AudioPlayerServiceImpl (playSingle): $e");
-    }
-  }
-
-  @override
   Future<void> stopMulti(String id) async {
     final player = _multiPlayers[id];
     if (player != null) {
@@ -108,6 +93,42 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   }
 
   @override
+  void setMultiVolume(String id, double volume) {
+    _multiPlayers[id]?.setVolume(volume);
+  }
+
+  // ── Single (one sound at a time) methods ──
+
+  @override
+  Future<void> resumeSingle() async {
+    final player = _singlePlayer;
+    if (player != null && player.playing == false) {
+      await player.play();
+    }
+  }
+
+  @override
+  Future<void> playSingle(
+    String id,
+    String assetPath, {
+    double volume = 0.5,
+  }) async {
+    try {
+      _singlePlayer ??= AudioPlayer();
+
+      await _singlePlayer!.setAsset(assetPath);
+      await _singlePlayer!.setLoopMode(LoopMode.all);
+      await _singlePlayer!.setVolume(volume);
+
+      await _singlePlayer!.play();
+    } catch (e) {
+      await _singlePlayer?.dispose();
+      _singlePlayer = null;
+      print("AudioPlayerServiceImpl (playSingle): $e");
+    }
+  }
+
+  @override
   Future<void> disposeSingle() async {
     if (_singlePlayer != null) {
       await _singlePlayer!.dispose();
@@ -126,14 +147,11 @@ class AudioPlayerServiceImpl implements AudioPlayerService {
   }
 
   @override
-  void setMultiVolume(String id, double volume) {
-    _multiPlayers[id]?.setVolume(volume);
-  }
-
-  @override
   void setSingleVolume(double volume) {
     _singlePlayer?.setVolume(volume);
   }
+
+  // ── Unified method ──
 
   @override
   Future<void> stopAll() async {
