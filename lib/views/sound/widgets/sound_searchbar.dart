@@ -2,8 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/shared/widgets/searchbar.dart';
 
-class SearchBar extends StatelessWidget {
-  const SearchBar({super.key, required this.controller, required this.hintText});
+class SoundSearchBar extends StatelessWidget {
+  const SoundSearchBar({
+    super.key,
+    required this.controller,
+    required this.hintText,
+  });
 
   final TextEditingController controller;
   final String hintText;

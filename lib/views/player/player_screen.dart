@@ -7,7 +7,7 @@ import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/views/player/widgets/player_header.dart';
 import 'package:lull/views/player/widgets/player_title.dart';
 import 'package:lull/views/player/widgets/sleep_timer.dart';
-import 'package:lull/views/player/widgets/sound_mixer.dart';
+import 'package:lull/shared/widgets/sound_mixer.dart';
 
 import 'widgets/player_controls.dart';
 import 'widgets/progress_bar.dart';

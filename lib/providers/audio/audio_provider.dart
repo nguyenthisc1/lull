@@ -148,7 +148,7 @@ class AudioNotifier extends StateNotifier<AudioState> {
       state = AudioIdle();
       _setMode(AudioMode.single);
       await _service.stopMulti(sound.id);
-    } else if (updated.length == 1) {
+    } else if (updated.isEmpty) {
       final remaining = updated.values.first;
       // Both updates in the same synchronous block → single rebuild frame.
       _setMode(AudioMode.single);
