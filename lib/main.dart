@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'providers/audio/audio_provider.dart';
 import 'providers/locale_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
@@ -24,7 +25,10 @@ class _LullAppState extends ConsumerState<LullApp> {
   void initState() {
     super.initState();
     // Load persisted locale from storage on first frame.
-    Future.microtask(() => ref.read(localeProvider.notifier).init());
+    Future.microtask(() async {
+      await ref.read(localeProvider.notifier).init();
+      await ref.read(audioProvider.notifier).restoreLastSession();
+    });
   }
 
   @override

@@ -3,6 +3,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/models/sound_model.dart';
 import 'package:lull/providers/audio/audio_state.dart';
+import 'package:lull/providers/sound_provider.dart';
+import 'package:lull/repositories/playback_storage.dart';
 import 'package:lull/services/player_service.dart';
 
 class AudioNotifier extends StateNotifier<AudioState> {
@@ -20,6 +22,10 @@ class AudioNotifier extends StateNotifier<AudioState> {
 
   void _setMode(AudioMode mode) =>
       _ref.read(audioModeProvider.notifier).state = mode;
+
+  void _persistState() {
+    PlaybackStorage.save(state, _mode);
+  }
 
   Future<void> _handleSingleTransition(
     AudioState oldState,
@@ -93,6 +99,8 @@ class AudioNotifier extends StateNotifier<AudioState> {
         default:
           break;
       }
+
+      _persistState();
     } catch (e) {
       state = previousState;
       print('AudioNotifier.playSingle Error: $e');
@@ -125,6 +133,8 @@ class AudioNotifier extends StateNotifier<AudioState> {
       if (newState is AudioMixing) {
         await _handleMixingTransition(previousState, sound);
       }
+
+      _persistState();
     } catch (e) {
       state = previousState;
       print('AudioNotifier.addToMix Error: $e');
@@ -142,20 +152,16 @@ class AudioNotifier extends StateNotifier<AudioState> {
     final updated = Map<String, AudioItemState>.from(mixing.mixerSounds)
       ..remove(sound.id);
 
-    // Update state + mode synchronously FIRST so the UI is immediately
-    // consistent, then run service calls in the background.
     if (updated.isEmpty) {
       state = AudioIdle();
       _setMode(AudioMode.single);
       await _service.stopMulti(sound.id);
     } else if (updated.isEmpty) {
       final remaining = updated.values.first;
-      // Both updates in the same synchronous block → single rebuild frame.
       _setMode(AudioMode.single);
       state = AudioSingle(
         singleSound: remaining.copyWith(playbackState: PlaybackState.playing),
       );
-      // Service calls after state is already committed.
       await _service.stopMulti(sound.id);
       await _service.disposeAllMulti();
       await _service.playSingle(remaining.sound.id, remaining.sound.assetPath);
@@ -163,6 +169,8 @@ class AudioNotifier extends StateNotifier<AudioState> {
       state = AudioMixing(mixerSounds: updated);
       await _service.stopMulti(sound.id);
     }
+
+    _persistState();
   }
 
   /// Toggles play/pause for a single sound inside the mixer.
@@ -189,6 +197,8 @@ class AudioNotifier extends StateNotifier<AudioState> {
     } else {
       await _service.resumeMulti(soundItemState.sound.id);
     }
+
+    _persistState();
   }
 
   /// Toggle play/pause across all active sounds.
@@ -215,6 +225,8 @@ class AudioNotifier extends StateNotifier<AudioState> {
         );
         state = AudioMixing(mixerSounds: updated);
       }
+
+      _persistState();
     }
   }
 
@@ -223,6 +235,7 @@ class AudioNotifier extends StateNotifier<AudioState> {
     _setMode(mode);
     state = AudioIdle();
     await _service.stopAll();
+    await PlaybackStorage.clear();
   }
 
   void setVolume(AudioItemState soundItemState, double v) {
@@ -239,10 +252,113 @@ class AudioNotifier extends StateNotifier<AudioState> {
       );
       _service.setSingleVolume(v);
     }
+    _persistState();
   }
 
   Future<void> stopAll() async {
     state = await state.stop(_service);
+    await PlaybackStorage.clear();
+  }
+
+  /// Restores the last session from storage (sounds start in paused state).
+  Future<void> restoreLastSession() async {
+    try {
+      final snapshot = await PlaybackStorage.load();
+      if (snapshot == null || snapshot.sounds.isEmpty) return;
+
+      final repo = _ref.read(soundsRepositoryProvider);
+
+      if (snapshot.mode == AudioMode.single) {
+        final entry = snapshot.sounds.first;
+        final sound = repo.findById(entry.soundId);
+        if (sound == null) return;
+
+        _setMode(AudioMode.single);
+        state = AudioSingle(
+          singleSound: AudioItemState(
+            sound: sound,
+            volume: entry.volume,
+            playbackState: PlaybackState.paused,
+          ),
+        );
+      } else {
+        final mixerSounds = <String, AudioItemState>{};
+        for (final entry in snapshot.sounds) {
+          final sound = repo.findById(entry.soundId);
+          if (sound != null) {
+            mixerSounds[sound.id] = AudioItemState(
+              sound: sound,
+              volume: entry.volume,
+              playbackState: PlaybackState.paused,
+            );
+          }
+        }
+        if (mixerSounds.isEmpty) return;
+
+        _setMode(AudioMode.mixing);
+        state = AudioMixing(mixerSounds: mixerSounds);
+      }
+    } catch (e) {
+      print('AudioNotifier.restoreLastSession Error: $e');
+    }
+  }
+
+  /// Restores playback from a specific list of [PlaybackSoundEntry]s and [AudioMode].
+  /// Used by LibraryProvider to load a saved preset.
+  Future<void> restoreFromEntries(
+    List<PlaybackSoundEntry> entries,
+    AudioMode mode,
+  ) async {
+    try {
+      await _service.stopAll();
+
+      final repo = _ref.read(soundsRepositoryProvider);
+
+      if (mode == AudioMode.single && entries.isNotEmpty) {
+        final entry = entries.first;
+        final sound = repo.findById(entry.soundId);
+        if (sound == null) return;
+
+        _setMode(AudioMode.single);
+        state = AudioSingle(
+          singleSound: AudioItemState(
+            sound: sound,
+            volume: entry.volume,
+            playbackState: PlaybackState.playing,
+          ),
+        );
+        await _service.playSingle(
+          sound.id,
+          sound.assetPath,
+          volume: entry.volume,
+        );
+      } else {
+        final mixerSounds = <String, AudioItemState>{};
+        for (final entry in entries) {
+          final sound = repo.findById(entry.soundId);
+          if (sound != null) {
+            mixerSounds[sound.id] = AudioItemState(
+              sound: sound,
+              volume: entry.volume,
+              playbackState: PlaybackState.playing,
+            );
+            await _service.playMulti(
+              sound.id,
+              sound.assetPath,
+              volume: entry.volume,
+            );
+          }
+        }
+        if (mixerSounds.isEmpty) return;
+
+        _setMode(AudioMode.mixing);
+        state = AudioMixing(mixerSounds: mixerSounds);
+      }
+
+      _persistState();
+    } catch (e) {
+      print('AudioNotifier.restoreFromEntries Error: $e');
+    }
   }
 }
 

@@ -9,6 +9,8 @@ import 'package:lull/views/player/widgets/player_title.dart';
 import 'package:lull/views/player/widgets/sleep_timer.dart';
 import 'package:lull/shared/widgets/sound_mixer.dart';
 
+import 'package:lull/shared/widgets/save_to_library_button.dart';
+
 import 'widgets/player_controls.dart';
 import 'widgets/progress_bar.dart';
 
@@ -83,9 +85,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
     super.didChangeDependencies();
     _audioNotifier = ref.read(audioProvider.notifier);
 
-    final isPlaying = ref.watch(
-      audioProvider.select((s) => s.isAnyPlaying),
-    );
+    final isPlaying = ref.watch(audioProvider.select((s) => s.isAnyPlaying));
     _updateSleepTimerTicker(isPlaying);
     _lastIsPlaying = isPlaying;
   }
@@ -155,9 +155,7 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.paddingOf(context).top;
-    final isPlaying = ref.watch(
-      audioProvider.select((s) => s.isAnyPlaying),
-    );
+    final isPlaying = ref.watch(audioProvider.select((s) => s.isAnyPlaying));
     _lastIsPlaying = isPlaying; // Sync last known
 
     // Start/stop ticker as needed based on state
@@ -205,9 +203,11 @@ class _PlayerScreenState extends ConsumerState<PlayerScreen>
                   onTogglePlay: () => _togglePlay(isPlaying),
                   onStopAll: _stopAll,
                 ),
-
+                const SizedBox(height: DesignTokens.spacing5),
+                const SaveToLibraryButton(),
                 const SizedBox(height: DesignTokens.spacing5),
                 SoundMixer(),
+
                 const SizedBox(height: DesignTokens.spacing5),
               ]),
             ),

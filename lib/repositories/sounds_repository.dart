@@ -3,6 +3,7 @@ import '../models/sound_model.dart';
 abstract class SoundsRepository {
   Future<List<SoundItem>> getAllSounds();
   Future<List<SoundItem>> getByCategory(SoundCategory category);
+  SoundItem? findById(String id);
 }
 
 class LocalSoundsRepository implements SoundsRepository {
@@ -222,5 +223,14 @@ class LocalSoundsRepository implements SoundsRepository {
   @override
   Future<List<SoundItem>> getByCategory(SoundCategory category) async {
     return _sounds.where((s) => s.category == category).toList();
+  }
+
+  @override
+  SoundItem? findById(String id) {
+    try {
+      return _sounds.firstWhere((s) => s.id == id);
+    } catch (_) {
+      return null;
+    }
   }
 }
