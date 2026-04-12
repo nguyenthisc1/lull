@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lull/core/constants/design_tokens.dart';
 import 'package:lull/providers/audio/audio_provider.dart';
 import 'package:lull/shared/l10n/app_localizations.dart';
+import 'package:lull/shared/widgets/save_to_library_button.dart';
 import 'package:lull/shared/widgets/scaffold.dart';
 import 'package:lull/shared/widgets/sound_mixer.dart';
 import 'package:lull/views/sound/widgets/sound_header.dart';
@@ -89,7 +90,18 @@ class _SoundScreenState extends ConsumerState<SoundScreen> {
                                     left: DesignTokens.spacing5,
                                     right: DesignTokens.spacing5,
                                   ),
-                                  child: SoundMixer(),
+                                  child: Column(
+                                    children: [
+                                      SoundMixer(),
+                                      const SizedBox(
+                                        height: DesignTokens.spacing4,
+                                      ),
+                                      const SaveToLibraryButton(),
+                                      const SizedBox(
+                                        height: DesignTokens.spacing2,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

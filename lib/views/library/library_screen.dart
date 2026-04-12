@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lull/core/constants/design_tokens.dart';
+import 'package:lull/core/router/app_routes.dart';
 import 'package:lull/core/theme/app_colors.dart';
 import 'package:lull/core/theme/app_typography.dart';
 import 'package:lull/models/library_model.dart';
@@ -56,8 +58,8 @@ class LibraryScreen extends ConsumerWidget {
                 ),
               ),
               libraryAsync.when(
-                loading: () => const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator()),
+                loading: () => const SliverToBoxAdapter(
+                  child: _LibrarySkeleton(),
                 ),
                 error: (e, _) => SliverFillRemaining(
                   child: Center(
@@ -124,13 +126,7 @@ class LibraryScreen extends ConsumerWidget {
   ) async {
     await ref.read(libraryProvider.notifier).loadLibrary(item);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Playing "${item.name}"'),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      context.go(AppRoutes.sound);
     }
   }
 
@@ -167,6 +163,118 @@ class LibraryScreen extends ConsumerWidget {
     }
   }
 
+}
+
+// ── Skeleton Loading ───────────────────────────────────────────────────────────
+
+class _LibrarySkeleton extends StatefulWidget {
+  const _LibrarySkeleton();
+
+  @override
+  State<_LibrarySkeleton> createState() => _LibrarySkeletonState();
+}
+
+class _LibrarySkeletonState extends State<_LibrarySkeleton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _ctrl;
+  late Animation<double> _opacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 850),
+    )..repeat(reverse: true);
+    _opacity = Tween<double>(begin: 0.25, end: 0.55).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _opacity,
+      builder: (_, __) => Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: DesignTokens.spacing6,
+        ),
+        child: Column(
+          children: List.generate(
+            4,
+            (i) => Padding(
+              padding: const EdgeInsets.only(bottom: DesignTokens.spacing3),
+              child: _buildSkeletonCard(_opacity.value),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeletonCard(double opacity) {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant.withValues(alpha: opacity),
+        borderRadius: DesignTokens.borderRadiusMd,
+      ),
+      padding: const EdgeInsets.all(DesignTokens.spacing4),
+      child: Row(
+        children: [
+          Container(
+            width: DesignTokens.spacing10,
+            height: DesignTokens.spacing10,
+            decoration: BoxDecoration(
+              color: AppColors.outline.withValues(alpha: opacity * 0.7),
+              borderRadius: DesignTokens.borderRadiusSm,
+            ),
+          ),
+          const SizedBox(width: DesignTokens.spacing4),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 14,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.outline.withValues(alpha: opacity * 0.7),
+                    borderRadius: DesignTokens.borderRadiusChip,
+                  ),
+                ),
+                const SizedBox(height: DesignTokens.spacing2),
+                Container(
+                  height: 10,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: AppColors.outline.withValues(alpha: opacity * 0.45),
+                    borderRadius: DesignTokens.borderRadiusChip,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: DesignTokens.spacing3),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: AppColors.outline.withValues(alpha: opacity * 0.5),
+              shape: BoxShape.circle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // ── Library Card ───────────────────────────────────────────────────────────────

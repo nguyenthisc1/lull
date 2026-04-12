@@ -107,7 +107,7 @@ class _SaveLibrarySheetState extends State<_SaveLibrarySheet> {
         DesignTokens.spacing6,
         DesignTokens.spacing6,
         DesignTokens.spacing6,
-        DesignTokens.spacing6 + bottomInset,
+        DesignTokens.spacing6 + bottomInset + DesignTokens.navHeight,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
